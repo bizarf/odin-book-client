@@ -1,0 +1,52 @@
+{
+    "name": "odin-book-client",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "homepage": "https://bizarf.github.io/odin-book-client/",
+    "author": "Tony Hoong (https://github.com/bizarf)",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "preview": "vite preview",
+        "deploy": "gh-pages -d dist",
+        "predeploy": "npm run build",
+        "test": "vitest"
+    },
+    "dependencies": {
+        "dayjs": "^1.11.9",
+        "jwt-decode": "^3.1.2",
+        "preline": "^1.9.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.14.2",
+        "react-spinners": "^0.13.8",
+        "universal-cookie": "^4.0.4"
+    },
+    "devDependencies": {
+        "@tailwindcss/forms": "^0.5.4",
+        "@testing-library/jest-dom": "^5.17.0",
+        "@testing-library/react": "^14.0.0",
+        "@testing-library/user-event": "^14.4.3",
+        "@types/react": "^18.2.15",
+        "@types/react-dom": "^18.2.7",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "@vitejs/plugin-react": "^4.0.3",
+        "autoprefixer": "^10.4.14",
+        "eslint": "^8.45.0",
+        "eslint-config-prettier": "^8.9.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.3",
+        "gh-pages": "^5.0.0",
+        "jsdom": "^22.1.0",
+        "msw": "^1.2.3",
+        "postcss": "^8.4.27",
+        "prettier-plugin-tailwindcss": "^0.4.1",
+        "tailwindcss": "^3.3.3",
+        "typescript": "^5.0.2",
+        "vite": "^4.4.5",
+        "vitest": "^0.34.1"
+    }
+}
