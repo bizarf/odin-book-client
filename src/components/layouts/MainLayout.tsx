@@ -1,14 +1,14 @@
 import React from "react";
-import Header from "../Header";
+import Header from "../ui/Header";
 import UserType from "../../types/userType";
 import { Outlet } from "react-router-dom";
-import Footer from "../Footer";
+import Footer from "../ui/Footer";
 
 type Props = {
     theme: string | undefined;
     setTheme: React.Dispatch<React.SetStateAction<string | undefined>>;
-    user: UserType | null;
-    setUser: React.Dispatch<React.SetStateAction<UserType | null>>;
+    user: UserType | undefined;
+    setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
     editor: boolean;
     setEditor: React.Dispatch<React.SetStateAction<boolean>>;
 };

@@ -10,14 +10,18 @@ import SplashLayout from "./components/layouts/SplashLayout";
 import HandleFacebookLogin from "./components/pages/HandleFacebookLogin";
 import FriendsList from "./components/pages/FriendsList";
 import PendingFriendsList from "./components/pages/PendingFriendsList";
+import Post from "./components/pages/Post";
+import Profile from "./components/pages/Profile";
 
 const App = () => {
     // sets dark mode
     const [theme, setTheme] = useState<string>();
     // user object
-    const [user, setUser] = useState<UserType | null>(null);
+    const [user, setUser] = useState<UserType>();
     // post editor modal
     const [editor, setEditor] = useState<boolean>(false);
+    const [deleteModal, setDeleteModal] = useState<boolean>(false);
+    const [postId, setPostId] = useState<string>("");
 
     return (
         <HashRouter>
@@ -54,7 +58,15 @@ const App = () => {
                     <Route
                         index
                         element={
-                            <HomeFeed editor={editor} setEditor={setEditor} />
+                            <HomeFeed
+                                editor={editor}
+                                setEditor={setEditor}
+                                user={user}
+                                deleteModal={deleteModal}
+                                setDeleteModal={setDeleteModal}
+                                postId={postId}
+                                setPostId={setPostId}
+                            />
                         }
                     />
                     <Route
@@ -69,6 +81,19 @@ const App = () => {
                     <Route
                         path="pending-friends"
                         element={<PendingFriendsList />}
+                    />
+                    <Route path="post/:id" element={<Post user={user} />} />
+                    <Route
+                        path="profile/:userId"
+                        element={
+                            <Profile
+                                user={user}
+                                deleteModal={deleteModal}
+                                setDeleteModal={setDeleteModal}
+                                postId={postId}
+                                setPostId={setPostId}
+                            />
+                        }
                     />
                 </Route>
             </Routes>

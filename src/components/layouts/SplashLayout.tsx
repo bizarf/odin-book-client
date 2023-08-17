@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
-import Footer from "../Footer";
+import Footer from "../ui/Footer";
 import LightModeBtn from "../ui/LightModeBtn";
 import DarkModeBtn from "../ui/DarkModeBtn";
 

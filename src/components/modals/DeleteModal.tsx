@@ -1,24 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Cookies from "universal-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 type Props = {
     setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
     postId: string;
-    // setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-    // loadingRef: React.MutableRefObject<boolean>;
 };
 
 const DeleteModal = ({ setDeleteModal, postId }: Props) => {
     const cookies = new Cookies();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleCloseModal = () => {
         setDeleteModal((state) => !state);
     };
 
     const deletePost = (postId: string) => {
-        // setLoading((state) => !state);
         // need to send the jwt as the route is protected
         const jwt = cookies.get("jwt_auth");
 
@@ -33,7 +31,11 @@ const DeleteModal = ({ setDeleteModal, postId }: Props) => {
             .then((data) => {
                 console.log(data);
                 if (data.success === true) {
-                    navigate(0);
+                    if (location.pathname != "/main") {
+                        navigate("/main");
+                    } else {
+                        navigate(0);
+                    }
                 } else {
                     console.log(data.message);
                 }
@@ -43,7 +45,7 @@ const DeleteModal = ({ setDeleteModal, postId }: Props) => {
     return (
         <div
             //set the background colour opacity instead of the separate opacity setting as this will prevent elements inside of the modal from having the separate opacity setting applied
-            className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center bg-black/[.7]"
+            className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center z-50 bg-black/[.2]"
             onClick={handleCloseModal}
         >
             <div

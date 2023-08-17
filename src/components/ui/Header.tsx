@@ -1,27 +1,21 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
-import UserType from "../types/userType";
+import UserType from "../../types/userType";
 import LightModeBtn from "./LightModeBtn";
-import DarkModeBtn from "./ui/DarkModeBtn";
+import DarkModeBtn from "./DarkModeBtn";
+import jwtDecode from "jwt-decode";
+import JwtDecodeType from "../../types/jwtDecode";
 
 type Props = {
     theme: string | undefined;
     setTheme: React.Dispatch<React.SetStateAction<string | undefined>>;
-    user: UserType | null;
-    setUser: React.Dispatch<React.SetStateAction<UserType | null>>;
-    editor: boolean;
+    user: UserType | undefined;
+    setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
     setEditor: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Header = ({
-    theme,
-    setTheme,
-    user,
-    setUser,
-    editor,
-    setEditor,
-}: Props) => {
+const Header = ({ theme, setTheme, user, setUser, setEditor }: Props) => {
     useEffect(() => {
         const pageTheme = localStorage.getItem("theme") || "light";
         setTheme(pageTheme);
@@ -54,11 +48,12 @@ const Header = ({
         const checkCookie = async () => {
             const jwt = await cookies.get("jwt_auth");
             if (jwt) {
-                setUser(jwt);
+                const decode: JwtDecodeType = jwtDecode(jwt);
+                setUser(decode.user);
             }
         };
         checkCookie();
-    }, [user]);
+    }, []);
 
     return (
         <header className="sticky top-0 z-50 flex w-full border-b-2 bg-white py-4 text-sm dark:border-b-0 dark:bg-gray-800">
@@ -88,6 +83,12 @@ const Header = ({
                         to="pending-friends"
                     >
                         Pending Friends
+                    </Link>
+                    <Link
+                        className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
+                        to={`profile/${user?._id}`}
+                    >
+                        Profile
                     </Link>
                     <Link
                         className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"

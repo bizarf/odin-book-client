@@ -5,7 +5,7 @@ import ErrorsType from "../../types/errorsType";
 import LoadingSpinner from "../LoadingSpinner";
 
 type Props = {
-    user: UserType | null;
+    user: UserType | undefined;
 };
 
 const SignUp = ({ user }: Props) => {

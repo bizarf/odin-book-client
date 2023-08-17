@@ -8,7 +8,7 @@ import JwtDecodeType from "../../types/jwtDecode";
 import LoadingSpinner from "../LoadingSpinner";
 
 type Props = {
-    setUser: React.Dispatch<React.SetStateAction<UserType | null>>;
+    setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
 };
 
 const Login = ({ setUser }: Props) => {
@@ -25,7 +25,9 @@ const Login = ({ setUser }: Props) => {
         const checkCookie = async () => {
             const jwt = await cookies.get("jwt_auth");
             if (jwt) {
-                setUser(jwt);
+                const decode: JwtDecodeType = jwtDecode(jwt);
+                setUser(decode.user);
+                // setUser(jwt);
                 navigate("/main");
             }
         };

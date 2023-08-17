@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
-import PostEditor from "../PostEditor";
+import PostEditor from "../modals/PostEditor";
 
 type Props = {
     editor: boolean;

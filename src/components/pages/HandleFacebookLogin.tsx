@@ -7,7 +7,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
 
 type Props = {
-    setUser: React.Dispatch<React.SetStateAction<UserType | null>>;
+    setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
 };
 
 const HandleFacebookLogin = ({ setUser }: Props) => {

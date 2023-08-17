@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import PostType from "../types/postType";
+import PostType from "../../types/postType";
 import Cookies from "universal-cookie";
-import LoadingSpinner from "./LoadingSpinner";
-import ErrorsType from "../types/errorsType";
+import LoadingSpinner from "../LoadingSpinner";
+import ErrorsType from "../../types/errorsType";
 import { useNavigate, useLocation } from "react-router-dom";
 
 type Props = {
@@ -43,8 +43,7 @@ const PostEditor = ({ setEditor }: Props) => {
             .then((data) => {
                 setLoading((state) => !state);
 
-                // console.log(data);
-                // data object can either return a token or errors. if we get the token object, then we decode the token and set that as the user state. we store the jwt in the cookie.
+                // the data object has a success boolean variable. if it's true, then close the post editor and then either send the user back to the main page or refresh the page
                 if (data.success === true) {
                     setEditor((state) => !state);
                     if (location.pathname != "/main") {
