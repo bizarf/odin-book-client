@@ -4,8 +4,6 @@ import Cookies from "universal-cookie";
 import UserType from "../../types/userType";
 import LightModeBtn from "./LightModeBtn";
 import DarkModeBtn from "./DarkModeBtn";
-import jwtDecode from "jwt-decode";
-import JwtDecodeType from "../../types/jwtDecode";
 
 type Props = {
     theme: string | undefined;
@@ -13,9 +11,17 @@ type Props = {
     user: UserType | undefined;
     setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
     setEditor: React.Dispatch<React.SetStateAction<boolean>>;
+    getUserInfo: () => void;
 };
 
-const Header = ({ theme, setTheme, user, setUser, setEditor }: Props) => {
+const Header = ({
+    theme,
+    setTheme,
+    user,
+    setUser,
+    setEditor,
+    getUserInfo,
+}: Props) => {
     useEffect(() => {
         const pageTheme = localStorage.getItem("theme") || "light";
         setTheme(pageTheme);
@@ -40,7 +46,7 @@ const Header = ({ theme, setTheme, user, setUser, setEditor }: Props) => {
 
     const logout = () => {
         // delete the JWT token from the cookie
-        setUser(null);
+        setUser(undefined);
         cookies.remove("jwt_auth");
     };
 
@@ -48,8 +54,8 @@ const Header = ({ theme, setTheme, user, setUser, setEditor }: Props) => {
         const checkCookie = async () => {
             const jwt = await cookies.get("jwt_auth");
             if (jwt) {
-                const decode: JwtDecodeType = jwtDecode(jwt);
-                setUser(decode.user);
+                // fetch user info from database
+                getUserInfo();
             }
         };
         checkCookie();

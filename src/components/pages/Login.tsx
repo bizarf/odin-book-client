@@ -2,16 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 import jwtDecode from "jwt-decode";
-import UserType from "../../types/userType";
 import ErrorsType from "../../types/errorsType";
 import JwtDecodeType from "../../types/jwtDecode";
 import LoadingSpinner from "../LoadingSpinner";
 
 type Props = {
-    setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
+    getUserInfo: () => void;
 };
 
-const Login = ({ setUser }: Props) => {
+const Login = ({ getUserInfo }: Props) => {
     const [username, setUsername] = useState<string>();
     const [password, setPassword] = useState<string>();
     const [error, setError] = useState<[ErrorsType] | []>([]);
@@ -25,9 +24,7 @@ const Login = ({ setUser }: Props) => {
         const checkCookie = async () => {
             const jwt = await cookies.get("jwt_auth");
             if (jwt) {
-                const decode: JwtDecodeType = jwtDecode(jwt);
-                setUser(decode.user);
-                // setUser(jwt);
+                getUserInfo();
                 navigate("/main");
             }
         };
@@ -54,15 +51,15 @@ const Login = ({ setUser }: Props) => {
             .then((res) => res.json())
             .then((data) => {
                 setLoading((state) => !state);
-                // console.log(data);
-                // data object can either return a token or errors. if we get the token object, then we decode the token and set that as the user state. we store the jwt in the cookie.
+                // data object can either return a token or errors. if we get the token object, then we decode the token for the exp time and then create a cookie to store the jwt
                 if (data.token) {
                     const decode: JwtDecodeType = jwtDecode(data.token);
-                    setUser(decode.user);
                     cookies.set("jwt_auth", data.token, {
                         // multiply the expiration value from the jwt by 1000 to change the value to milliseconds so that it'll become a valid date
                         expires: new Date(decode.exp * 1000),
                     });
+                    // this fetches the user's info from the database
+                    getUserInfo();
                     setSuccess((state) => !state);
                     setTimeout(() => {
                         navigate("/main");

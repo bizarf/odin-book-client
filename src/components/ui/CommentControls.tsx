@@ -1,15 +1,15 @@
 import { useState } from "react";
-import DeleteModal from "../modals/DeletePostModal";
-import PostEditor from "../modals/PostEditor";
+import CommentEditor from "../modals/CommentEditor";
+import DeleteCommentModal from "../modals/DeleteCommentModal";
 
 type Props = {
-    postId: string;
-    currentPost: string;
+    commentId: string;
+    commentContent: string;
+    postId: string | undefined;
 };
 
-const PostControls = ({ postId, currentPost }: Props) => {
-    const [editor, setEditor] = useState<boolean>(false);
-    const [editMode, setEditMode] = useState<boolean>(false);
+const CommentControls = ({ commentId, commentContent, postId }: Props) => {
+    const [edit, setEdit] = useState<boolean>(false);
     const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
     const openDeleteModal = () => {
@@ -17,8 +17,7 @@ const PostControls = ({ postId, currentPost }: Props) => {
     };
 
     const openEditPost = () => {
-        setEditMode((state) => !state);
-        setEditor((state) => !state);
+        setEdit((state) => !state);
     };
 
     return (
@@ -90,20 +89,23 @@ const PostControls = ({ postId, currentPost }: Props) => {
                     <span> Delete</span>
                 </button>
             </div>
-            {deleteModal && (
-                <DeleteModal setDeleteModal={setDeleteModal} postId={postId} />
-            )}
-            {editor && (
-                <PostEditor
+            {edit && (
+                <CommentEditor
+                    setEdit={setEdit}
+                    commentId={commentId}
+                    commentContent={commentContent}
                     postId={postId}
-                    setEditor={setEditor}
-                    editMode={editMode}
-                    currentPost={currentPost}
-                    setEditMode={setEditMode}
+                />
+            )}
+            {deleteModal && (
+                <DeleteCommentModal
+                    setDeleteModal={setDeleteModal}
+                    postId={postId}
+                    commentId={commentId}
                 />
             )}
         </div>
     );
 };
 
-export default PostControls;
+export default CommentControls;

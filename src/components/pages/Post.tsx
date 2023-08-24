@@ -3,13 +3,13 @@ import PostType from "../../types/postType";
 import CommentType from "../../types/commentType";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
-import DeleteModal from "../modals/DeleteModal";
 import PostControls from "../ui/PostControls";
 import LikeBtn from "../ui/LikeBtn";
 import dayjs from "dayjs";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import ErrorsType from "../../types/errorsType";
 import UserType from "../../types/userType";
+import CommentControls from "../ui/CommentControls";
 
 type Props = {
     user: UserType | undefined;
@@ -20,8 +20,6 @@ const Post = ({ user }: Props) => {
     const [comments, setComments] = useState<CommentType[] | []>([]);
     const [comment, setComment] = useState<string>();
     const loadingRef = useRef<boolean>(true);
-    const [deleteModal, setDeleteModal] = useState<boolean>(false);
-    const [postId, setPostId] = useState<string>("");
     const [error, setError] = useState<[ErrorsType] | []>([]);
 
     const cookies = new Cookies();
@@ -29,6 +27,7 @@ const Post = ({ user }: Props) => {
     const { id } = useParams();
     const jwt = cookies.get("jwt_auth");
 
+    // fetches post from database
     const getPost = () => {
         fetch(`https://odin-book-api-5r5e.onrender.com/api/post/${id}`, {
             method: "get",
@@ -39,13 +38,13 @@ const Post = ({ user }: Props) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                // loadingRef.current = false;
                 if (data) {
                     setPost(data);
                 }
             });
     };
 
+    // fetches comments
     const getComments = () => {
         fetch(
             `https://odin-book-api-5r5e.onrender.com/api/post/${id}/comments`,
@@ -86,7 +85,6 @@ const Post = ({ user }: Props) => {
         )
             .then((res) => res.json())
             .then((data) => {
-                // setLoading((state) => !state);
                 loadingRef.current = false;
 
                 // the data object has a success boolean variable. if it's true, then close the post editor and then either send the user back to the main page or refresh the page
@@ -111,17 +109,48 @@ const Post = ({ user }: Props) => {
                 {post && (
                     <div className="my-3 flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
                         <div className="flex items-center justify-between mx-4 pt-1 border-b-2 dark:border-gray-600">
-                            <div className="flex items-center">
-                                <h3 className=" dark:text-white">
-                                    {post.user.firstname} {post.user.lastname}
-                                </h3>
+                            <div className="flex items-center py-2">
+                                <Link to={`/main/profile/${post.user._id}`}>
+                                    {!post.user.photo ? (
+                                        <img
+                                            className="inline-block h-[2.875rem] w-[2.875rem] rounded-full ring-2 ring-white dark:ring-gray-800 mr-4"
+                                            src="./placeholder_profile.webp"
+                                            alt="User avatar"
+                                        />
+                                    ) : (
+                                        <img
+                                            className="inline-block h-[2.875rem] w-[2.875rem] rounded-full ring-2 ring-white dark:ring-gray-800 mr-4"
+                                            src={post.user.photo}
+                                            alt="User avatar"
+                                        />
+                                    )}
+                                </Link>
+                                <div>
+                                    <Link to={`/main/profile/${post.user._id}`}>
+                                        <h3 className=" dark:text-white">
+                                            {post.user.firstname}{" "}
+                                            {post.user.lastname}
+                                        </h3>
+                                    </Link>
+                                    <p className="text-xs text-gray-600 dark:text-gray-300">
+                                        Posted on:
+                                        {dayjs(post.timestamp).format(
+                                            " DD MMM YYYY, hh:mma"
+                                        )}
+                                        {post.edited && (
+                                            <span className="text-xs text-gray-600 dark:text-gray-300">
+                                                {" "}
+                                                (edited)
+                                            </span>
+                                        )}
+                                    </p>
+                                </div>
                             </div>
                             {user?._id === post.user._id && (
                                 <div>
                                     <PostControls
-                                        setDeleteModal={setDeleteModal}
-                                        currentPostId={post._id}
-                                        setPostId={setPostId}
+                                        postId={post._id}
+                                        currentPost={post.postContent}
                                     />
                                 </div>
                             )}
@@ -129,24 +158,13 @@ const Post = ({ user }: Props) => {
                         <p className="dark:text-white px-4 pb-2">
                             {post.postContent}
                         </p>
-                        <p className="ml-4 text-xs text-gray-600 dark:text-gray-300">
-                            Posted on:
-                            {dayjs(post.timestamp).format(
-                                " ddd DD, YYYY, hh:mma"
-                            )}
-                        </p>
+
                         <div className="dark:text-white border-t-2 dark:border-slate-700 flex justify-center">
                             <LikeBtn likes={post.likes} postId={post._id} />
                             <button className="w-full border-l-2 dark:border-slate-700">
                                 Comments
                             </button>
                         </div>
-                        {deleteModal && (
-                            <DeleteModal
-                                setDeleteModal={setDeleteModal}
-                                postId={post._id}
-                            />
-                        )}
                     </div>
                 )}
                 <div>
@@ -189,16 +207,57 @@ const Post = ({ user }: Props) => {
                             className="my-2 flex flex-col rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]"
                         >
                             <div className="flex items-center justify-between border-b-2 dark:border-gray-600">
-                                <p className="text-gray-800 dark:text-white">
-                                    {comment.user.firstname}{" "}
-                                    {comment.user.lastname}
-                                </p>
-                                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                                    Posted on:
-                                    {dayjs(post?.timestamp).format(
-                                        " ddd DD, YYYY, hh:mma"
-                                    )}
-                                </p>
+                                <div className="flex items-center py-2">
+                                    <Link
+                                        to={`/main/profile/${comment.user._id}`}
+                                    >
+                                        {!comment.user?.photo ? (
+                                            <img
+                                                className="inline-block h-[2.875rem] w-[2.875rem] rounded-full ring-2 ring-white dark:ring-gray-800 mr-4"
+                                                src="./placeholder_profile.webp"
+                                                alt="User avatar"
+                                            />
+                                        ) : (
+                                            <img
+                                                className="inline-block h-[2.875rem] w-[2.875rem] rounded-full ring-2 ring-white dark:ring-gray-800 mr-4"
+                                                src={comment.user.photo}
+                                                alt="User avatar"
+                                            />
+                                        )}
+                                    </Link>
+                                    <div>
+                                        <Link
+                                            to={`/main/profile/${comment.user._id}`}
+                                        >
+                                            <h3 className=" dark:text-white">
+                                                {comment.user.firstname}{" "}
+                                                {comment.user.lastname}
+                                            </h3>
+                                        </Link>
+
+                                        <p className="text-xs text-gray-600 dark:text-gray-300">
+                                            Posted on:
+                                            {dayjs(comment.timestamp).format(
+                                                " ddd DD, YYYY, hh:mma"
+                                            )}
+                                            {comment.edited && (
+                                                <span className="text-xs text-gray-600 dark:text-gray-300">
+                                                    {" "}
+                                                    (edited)
+                                                </span>
+                                            )}
+                                        </p>
+                                    </div>
+                                </div>
+                                {user?._id === comment.user._id && (
+                                    <div>
+                                        <CommentControls
+                                            commentId={comment._id}
+                                            commentContent={comment.comment}
+                                            postId={post?._id}
+                                        />
+                                    </div>
+                                )}
                             </div>
                             <p className="mt-1 text-gray-800 dark:text-white break-words whitespace-pre-wrap">
                                 {comment.comment}

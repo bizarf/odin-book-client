@@ -1,41 +1,39 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Cookies from "universal-cookie";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
     setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
-    postId: string;
+    postId: string | undefined;
+    commentId: string;
 };
 
-const DeleteModal = ({ setDeleteModal, postId }: Props) => {
+const DeleteCommentModal = ({ setDeleteModal, postId, commentId }: Props) => {
     const cookies = new Cookies();
     const navigate = useNavigate();
-    const location = useLocation();
 
     const handleCloseModal = () => {
         setDeleteModal((state) => !state);
     };
 
-    const deletePost = (postId: string) => {
+    const deleteComment = () => {
         // need to send the jwt as the route is protected
         const jwt = cookies.get("jwt_auth");
 
-        fetch(`https://odin-book-api-5r5e.onrender.com/api/post/${postId}`, {
-            method: "delete",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}`,
-            },
-        })
+        fetch(
+            `https://odin-book-api-5r5e.onrender.com/api/post/${postId}/comments/${commentId}`,
+            {
+                method: "delete",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwt}`,
+                },
+            }
+        )
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
                 if (data.success === true) {
-                    if (location.pathname != "/main") {
-                        navigate("/main");
-                    } else {
-                        navigate(0);
-                    }
+                    navigate(0);
                 } else {
                     console.log(data.message);
                 }
@@ -45,7 +43,7 @@ const DeleteModal = ({ setDeleteModal, postId }: Props) => {
     return (
         <div
             //set the background colour opacity instead of the separate opacity setting as this will prevent elements inside of the modal from having the separate opacity setting applied
-            className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center z-50 bg-black/[.2]"
+            className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center z-50 bg-black/[.7]"
             onClick={handleCloseModal}
         >
             <div
@@ -58,7 +56,7 @@ const DeleteModal = ({ setDeleteModal, postId }: Props) => {
                 </h2>
                 <div className="flex justify-center">
                     <button
-                        onClick={() => deletePost(postId)}
+                        onClick={deleteComment}
                         className="rounded-md border border-transparent bg-blue-600 px-10 py-3 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:bg-green-800 dark:hover:bg-green-900 dark:focus:ring-offset-gray-800 mr-4"
                     >
                         Yes
@@ -75,4 +73,4 @@ const DeleteModal = ({ setDeleteModal, postId }: Props) => {
     );
 };
 
-export default DeleteModal;
+export default DeleteCommentModal;

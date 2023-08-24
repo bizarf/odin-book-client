@@ -1,6 +1,6 @@
 type CommentType = {
     _id: string;
-    user: { firstname: string; lastname: string; _id: string };
+    user: { firstname: string; lastname: string; _id: string; photo: string };
     comment: string;
     timestamp: Date;
     postId: string;

@@ -12,6 +12,9 @@ import FriendsList from "./components/pages/FriendsList";
 import PendingFriendsList from "./components/pages/PendingFriendsList";
 import Post from "./components/pages/Post";
 import Profile from "./components/pages/Profile";
+import Cookies from "universal-cookie";
+import jwtDecode from "jwt-decode";
+import JwtDecodeType from "./types/jwtDecode";
 
 const App = () => {
     // sets dark mode
@@ -20,8 +23,29 @@ const App = () => {
     const [user, setUser] = useState<UserType>();
     // post editor modal
     const [editor, setEditor] = useState<boolean>(false);
-    const [deleteModal, setDeleteModal] = useState<boolean>(false);
-    const [postId, setPostId] = useState<string>("");
+
+    const cookies = new Cookies();
+
+    const getUserInfo = () => {
+        const jwt = cookies.get("jwt_auth");
+        const decode: JwtDecodeType = jwtDecode(jwt);
+        fetch(
+            `https://odin-book-api-5r5e.onrender.com/api/profile/${decode.user}`,
+            {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwt}`,
+                },
+            }
+        )
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success === true) {
+                    setUser(data.user);
+                }
+            });
+    };
 
     return (
         <HashRouter>
@@ -32,10 +56,15 @@ const App = () => {
                     element={<SplashLayout theme={theme} setTheme={setTheme} />}
                 >
                     {/* main page for the "/" path is the login page */}
-                    <Route index element={<Login setUser={setUser} />} />
+                    <Route
+                        index
+                        element={<Login getUserInfo={getUserInfo} />}
+                    />
                     <Route
                         path="facebook-login"
-                        element={<HandleFacebookLogin setUser={setUser} />}
+                        element={
+                            <HandleFacebookLogin getUserInfo={getUserInfo} />
+                        }
                     />
                     {/* sign up page for user accounts */}
                     <Route path="sign-up" element={<SignUp user={user} />} />
@@ -52,48 +81,23 @@ const App = () => {
                             setUser={setUser}
                             editor={editor}
                             setEditor={setEditor}
+                            getUserInfo={getUserInfo}
                         />
                     }
                 >
                     <Route
                         index
-                        element={
-                            <HomeFeed
-                                editor={editor}
-                                setEditor={setEditor}
-                                user={user}
-                                deleteModal={deleteModal}
-                                setDeleteModal={setDeleteModal}
-                                postId={postId}
-                                setPostId={setPostId}
-                            />
-                        }
+                        element={<HomeFeed setEditor={setEditor} user={user} />}
                     />
-                    <Route
-                        path="friends-list"
-                        element={
-                            <FriendsList
-                                editor={editor}
-                                setEditor={setEditor}
-                            />
-                        }
-                    />
+                    <Route path="friends-list" element={<FriendsList />} />
                     <Route
                         path="pending-friends"
-                        element={<PendingFriendsList />}
+                        element={<PendingFriendsList user={user} />}
                     />
                     <Route path="post/:id" element={<Post user={user} />} />
                     <Route
                         path="profile/:userId"
-                        element={
-                            <Profile
-                                user={user}
-                                deleteModal={deleteModal}
-                                setDeleteModal={setDeleteModal}
-                                postId={postId}
-                                setPostId={setPostId}
-                            />
-                        }
+                        element={<Profile user={user} />}
                     />
                 </Route>
             </Routes>

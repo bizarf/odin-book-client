@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import App from "../src/App";
 import React from "react";
 import { afterEach, beforeEach, describe } from "vitest";
+import "dotenv/config";
 
 beforeEach(() => {
     render(<App />);
@@ -23,6 +24,29 @@ describe("splash/login page", () => {
         expect(screen.getByRole("link", { name: "Create new account" }));
     });
 
+    it("user logs in", async () => {
+        // render(<App />);
+        const user = userEvent.setup();
+
+        const usernameInput = screen.getByRole("textbox", { name: "Username" });
+        const passwordInput = screen.getByText("Password");
+        expect(usernameInput).toBeInTheDocument();
+        expect(passwordInput).toBeInTheDocument();
+        if (process.env.TESTUSER) {
+            await user.type(usernameInput, process.env.TESTUSER);
+        }
+        if (process.env.TESTPASSWORD) {
+            await user.type(passwordInput, process.env.TESTPASSWORD);
+        }
+        const submitBtn = screen.getByRole("button", { name: "Submit" });
+
+        await user.click(submitBtn);
+        // const success = screen.getByText("Login was successful!");
+        // expect(success).toBeInTheDocument();
+    });
+});
+
+describe("user navigation", () => {
     it("user navigates to sign up page", async () => {
         // render(<App />);
 
@@ -37,17 +61,5 @@ describe("splash/login page", () => {
 
         const signUpHeader = screen.getByRole("heading", { name: "Sign Up" });
         expect(signUpHeader).toBeInTheDocument();
-    });
-});
-
-describe("user login", () => {
-    it("the user signs in", async () => {
-        // render(<App />);
-
-        const userNameInput = screen.getByRole("textbox", { name: "Username" });
-        const passwordInput = screen.getByRole("input", { name: "password" });
-        const submitBtn = screen.getByRole("button", { name: "Submit" });
-        // await userEvent.click(userNameInput);
-        // await userEvent.type(userNameInput, "");
     });
 });
