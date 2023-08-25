@@ -8,9 +8,8 @@ const LightModeBtn = ({ setTheme }: Props) => {
     return (
         <>
             <button
-                className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
+                className="whitespace-nowrap px-1 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
                 aria-label="Turn on dark mode"
-                // onClick={() => setTheme("dark")}
                 onClick={() => setTheme("dark")}
             >
                 <svg

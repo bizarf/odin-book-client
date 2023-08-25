@@ -60,7 +60,13 @@ const FriendsList = () => {
             <h2 className="py-4 text-center text-2xl font-bold text-gray-800  dark:text-white">
                 Friends list
             </h2>
-            {friends.length === 0 && <div>You don't have any friends</div>}
+            {friends.length === 0 && (
+                <div className="mx-96 rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
+                    <h3 className="dark:text-white text-lg text-center">
+                        You don't have any friends
+                    </h3>
+                </div>
+            )}
             {friends.map((friend, index) => {
                 return (
                     <div

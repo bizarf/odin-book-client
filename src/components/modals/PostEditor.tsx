@@ -117,7 +117,7 @@ const PostEditor = ({
 
     return (
         <div
-            className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center z-50 bg-black/[.2]"
+            className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center z-50 bg-black/[.7]"
             onClick={(e) => handleCloseEditor(e)}
         >
             <div
@@ -163,6 +163,7 @@ const PostEditor = ({
                             name="postContent"
                             id="postContent"
                             rows={6}
+                            maxLength={280}
                             className="w-full rounded dark:bg-slate-900 dark:text-white"
                             placeholder="Share your thoughts"
                             onChange={(e) => setPostContent(e.target.value)}

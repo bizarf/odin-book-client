@@ -227,6 +227,13 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                         </div>
                     );
                 })}
+                {posts.length === 0 && (
+                    <div className="my-3 flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
+                        <p className="dark:text-white p-4 text-center">
+                            Your feed is empty. Make a post or add some friends.
+                        </p>
+                    </div>
+                )}
             </div>
             {loadingRef.current && (
                 // this setup prevents clicking of elements whilst the loading spinner is active

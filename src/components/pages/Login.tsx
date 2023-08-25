@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 import ErrorsType from "../../types/errorsType";
 import JwtDecodeType from "../../types/jwtDecode";
 import LoadingSpinner from "../LoadingSpinner";
+import splashPhoto from "../../assets/pexels-ivan-samkov-4240497.jpg";
 
 type Props = {
     getUserInfo: () => void;
@@ -76,11 +77,18 @@ const Login = ({ getUserInfo }: Props) => {
 
     return (
         <div className="grid grid-cols-2">
-            <div className="bg-red-500 flex items-center justify-center">
-                Splash message
+            <div className="">
+                <img
+                    src={splashPhoto}
+                    alt=""
+                    className="w-full h-[calc(100vh-5.25rem)] object-cover"
+                />
             </div>
             <div className="flex items-center justify-center flex-col">
                 <div>
+                    <h3 className="text-xl dark:text-white text-center -mt-8 mb-4">
+                        Welcome to Odin Book
+                    </h3>
                     <form className="rounded-xl border border-slate-500 p-4 dark:bg-gray-800">
                         <label
                             htmlFor="username"

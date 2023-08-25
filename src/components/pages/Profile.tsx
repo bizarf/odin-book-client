@@ -170,6 +170,11 @@ const Profile = ({ user }: Props) => {
                     </div>
                 </div>
                 <div className="">
+                    <div className="my-3 flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
+                        <h2 className="my-2 dark:text-white text-2xl font-bold text-center">
+                            Posts
+                        </h2>
+                    </div>
                     {posts.map((post, index) => {
                         return (
                             <div
@@ -236,6 +241,13 @@ const Profile = ({ user }: Props) => {
                             </div>
                         );
                     })}
+                    {posts.length === 0 && (
+                        <div className="my-3 flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
+                            <p className="dark:text-white p-4 text-center">
+                                You haven't made any posts yet.{" "}
+                            </p>
+                        </div>
+                    )}
                 </div>
             </div>
             {loadingRef.current && (

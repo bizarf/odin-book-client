@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import ErrorsType from "../../types/errorsType";
 import UserType from "../../types/userType";
-import CommentControls from "../ui/CommentControls";
+import Comments from "../ui/Comments";
 
 type Props = {
     user: UserType | undefined;
@@ -172,7 +172,7 @@ const Post = ({ user }: Props) => {
                         <textarea
                             name="comment"
                             id="comment"
-                            rows={6}
+                            rows={4}
                             className="w-full rounded dark:bg-slate-900 dark:text-white"
                             placeholder="Share your thoughts"
                             maxLength={280}
@@ -200,71 +200,7 @@ const Post = ({ user }: Props) => {
                         </div>
                     </form>
                 </div>
-                {comments.map((comment, index) => {
-                    return (
-                        <div
-                            key={index}
-                            className="my-2 flex flex-col rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]"
-                        >
-                            <div className="flex items-center justify-between border-b-2 dark:border-gray-600">
-                                <div className="flex items-center py-2">
-                                    <Link
-                                        to={`/main/profile/${comment.user._id}`}
-                                    >
-                                        {!comment.user?.photo ? (
-                                            <img
-                                                className="inline-block h-[2.875rem] w-[2.875rem] rounded-full ring-2 ring-white dark:ring-gray-800 mr-4"
-                                                src="./placeholder_profile.webp"
-                                                alt="User avatar"
-                                            />
-                                        ) : (
-                                            <img
-                                                className="inline-block h-[2.875rem] w-[2.875rem] rounded-full ring-2 ring-white dark:ring-gray-800 mr-4"
-                                                src={comment.user.photo}
-                                                alt="User avatar"
-                                            />
-                                        )}
-                                    </Link>
-                                    <div>
-                                        <Link
-                                            to={`/main/profile/${comment.user._id}`}
-                                        >
-                                            <h3 className=" dark:text-white">
-                                                {comment.user.firstname}{" "}
-                                                {comment.user.lastname}
-                                            </h3>
-                                        </Link>
-
-                                        <p className="text-xs text-gray-600 dark:text-gray-300">
-                                            Posted on:
-                                            {dayjs(comment.timestamp).format(
-                                                " ddd DD, YYYY, hh:mma"
-                                            )}
-                                            {comment.edited && (
-                                                <span className="text-xs text-gray-600 dark:text-gray-300">
-                                                    {" "}
-                                                    (edited)
-                                                </span>
-                                            )}
-                                        </p>
-                                    </div>
-                                </div>
-                                {user?._id === comment.user._id && (
-                                    <div>
-                                        <CommentControls
-                                            commentId={comment._id}
-                                            commentContent={comment.comment}
-                                            postId={post?._id}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                            <p className="mt-1 text-gray-800 dark:text-white break-words whitespace-pre-wrap">
-                                {comment.comment}
-                            </p>
-                        </div>
-                    );
-                })}
+                <Comments comments={comments} user={user} post={post} />
             </div>
             <div></div>
             {loadingRef.current && (

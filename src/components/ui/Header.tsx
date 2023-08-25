@@ -64,7 +64,12 @@ const Header = ({
     return (
         <header className="sticky top-0 z-50 flex w-full border-b-2 bg-white py-4 text-sm dark:border-b-0 dark:bg-gray-800">
             <nav className="flex w-full flex-row items-center justify-between gap-5 px-5 ">
-                <div>BLOG LOGO OR TEXT GOES HERE</div>
+                <Link
+                    className="whitespace-nowrap pl-2 text-3xl font-bold text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200 select-none"
+                    to="/main"
+                >
+                    Odin Book
+                </Link>
                 <div className="inline-flex">
                     <Link
                         className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"

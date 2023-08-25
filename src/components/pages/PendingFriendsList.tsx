@@ -94,7 +94,11 @@ const PendingFriendsList = ({ user }: Props) => {
                     Pending friend request
                 </h2>
                 {pendingFriends.length === 0 && (
-                    <div>There are no pending friend requests</div>
+                    <div className="mx-96 rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
+                        <h3 className="dark:text-white text-lg text-center">
+                            There are no pending friend requests
+                        </h3>
+                    </div>
                 )}
                 {pendingFriends.map((request, index) => {
                     if (request.receiver._id === user?._id) {

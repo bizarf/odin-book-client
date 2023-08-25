@@ -33,10 +33,13 @@ const SplashLayout = ({ theme, setTheme }: Props) => {
     return (
         <div className="flex min-h-full flex-col dark:bg-slate-600">
             <div className="flex-[1_0_auto] grid grid-rows-[auto_1fr] min-h-full dark:bg-slate-600">
-                <div className="py-2 inline-flex justify-between border-b-2 text-sm dark:border-b-0 dark:bg-gray-800">
-                    <div>
-                        <Link to="/">Logo</Link>
-                    </div>
+                <div className="py-2 flex justify-between border-b-2 text-sm dark:border-b-0 dark:bg-gray-800 items-center px-4">
+                    <Link
+                        to="/"
+                        className=" text-3xl font-bold text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200 select-none"
+                    >
+                        Odin Book
+                    </Link>
                     <div className="">
                         {theme === "light" && (
                             <LightModeBtn setTheme={setTheme} />
