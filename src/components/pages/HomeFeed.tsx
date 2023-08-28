@@ -40,20 +40,20 @@ const HomeFeed = ({ setEditor, user }: Props) => {
 
                     myPostFeedBtn?.classList.replace(
                         "dark:text-white",
-                        "dark:text-blue-600"
+                        "dark:text-blue-400"
                     );
                     myPostFeedBtn?.classList.add("font-semibold");
                     myPostFeedBtn?.classList.replace(
                         "border-transparent",
-                        "border-blue-600"
+                        "border-blue-400"
                     );
                     globalFeedBtn?.classList.replace(
-                        "dark:text-blue-600",
+                        "dark:text-blue-400",
                         "dark:text-white"
                     );
                     globalFeedBtn?.classList.remove("font-semibold");
                     globalFeedBtn?.classList.replace(
-                        "border-blue-600",
+                        "border-blue-400",
                         "border-transparent"
                     );
                     setPosts([...data.timeline] as [PostType]);
@@ -79,22 +79,22 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                         document.querySelector("#globalFeedBtn");
 
                     myPostFeedBtn?.classList.replace(
-                        "dark:text-blue-600",
+                        "dark:text-blue-400",
                         "dark:text-white"
                     );
                     myPostFeedBtn?.classList.remove("font-semibold");
                     myPostFeedBtn?.classList.replace(
-                        "border-blue-600",
+                        "border-blue-400",
                         "border-transparent"
                     );
                     globalFeedBtn?.classList.replace(
                         "dark:text-white",
-                        "dark:text-blue-600"
+                        "dark:text-blue-400"
                     );
                     globalFeedBtn?.classList.add("font-semibold");
                     globalFeedBtn?.classList.replace(
                         "border-transparent",
-                        "border-blue-600"
+                        "border-blue-400"
                     );
                     setPosts([...data.globalTimeline] as [PostType]);
                 }
@@ -106,8 +106,8 @@ const HomeFeed = ({ setEditor, user }: Props) => {
     }, []);
 
     return (
-        <div className="grid grid-cols-[0.6fr_1fr] mx-20 gap-6">
-            <div className="flex flex-col items-center my-2 rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] h-fit py-4">
+        <div className="sm:grid sm:grid-cols-[0.6fr_1fr] mx-4 sm:mx-20 sm:gap-6">
+            <div className="sm:flex flex-col items-center my-3 rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] h-fit py-4 hidden">
                 {!user?.photo ? (
                     <img
                         className="inline-block h-28 w-28 rounded-full ring-2 ring-white dark:ring-gray-800"
@@ -122,7 +122,7 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                     />
                 )}
                 <div className="flex flex-col items-center">
-                    <h3 className="text-3xl dark:text-white font-bold">
+                    <h3 className="text-xl sm:text-3xl dark:text-white font-bold">
                         {user?.firstname} {user?.lastname}
                     </h3>
                     <p className="dark:text-white">
@@ -131,7 +131,7 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                 </div>
             </div>
             <div>
-                <div className="border-b border-gray-200 dark:border-gray-700 mt-2">
+                <div className="border-b border-gray-200 dark:border-gray-700 mt-3">
                     <nav className="-mb-0.5 flex justify-end space-x-6 pr-4 dark:bg-gray-800 rounded-md bg-white">
                         <button
                             type="button"
@@ -214,7 +214,7 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                                     </div>
                                 )}
                             </div>
-                            <p className="dark:text-white px-4 pb-2">
+                            <p className="dark:text-white px-4 py-2">
                                 {post.postContent}
                             </p>
                             <div className="dark:text-white border-t-2 dark:border-slate-700 flex justify-center">

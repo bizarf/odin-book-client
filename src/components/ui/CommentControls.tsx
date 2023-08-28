@@ -26,6 +26,7 @@ const CommentControls = ({ commentId, commentContent, postId }: Props) => {
                 id="hs-dropdown-custom-icon-trigger"
                 type="button"
                 className="hs-dropdown-toggle transition-all rounded-full hover:dark:bg-slate-700 p-2 hover:bg-slate-300"
+                aria-label="Dropdown menu"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

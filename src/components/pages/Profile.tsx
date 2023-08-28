@@ -108,28 +108,28 @@ const Profile = ({ user }: Props) => {
     }, []);
 
     return (
-        <div className=" mx-20">
-            <div className="flex items-center justify-between px-10 py-4">
+        <div className="sm:mx-20 mx-4">
+            <div className="flex items-center sm:justify-between sm:px-10 sm:py-4 p-2 flex-wrap">
                 <div className="flex items-center">
                     <div>
                         {!userProfile?.photo ? (
                             <img
-                                className="inline-block h-32 w-32 rounded-full ring-2 ring-white dark:ring-gray-800"
+                                className="inline-block h-20 w-20 sm:h-32 sm:w-32 rounded-full ring-2 ring-white dark:ring-gray-800"
                                 src="./placeholder_profile.webp"
                                 alt="User avatar"
                             />
                         ) : (
                             <img
-                                className="inline-block h-32 w-32 rounded-full ring-2 ring-white dark:ring-gray-800"
+                                className="inline-block h-20 w-20 sm:h-32 sm:w-32 rounded-full ring-2 ring-white dark:ring-gray-800"
                                 src={userProfile.photo}
                                 alt="User avatar"
                             />
                         )}
                     </div>
                     <div className="self-end px-6 my-6">
-                        <h3 className="text-3xl dark:text-white font-bold">
+                        <h1 className="text-xl sm:text-3xl dark:text-white font-bold">
                             {userProfile?.firstname} {userProfile?.lastname}
-                        </h3>
+                        </h1>
                         <p className="dark:text-white">
                             Friends: {userProfile?.friends.length}
                         </p>
@@ -148,19 +148,19 @@ const Profile = ({ user }: Props) => {
                     )}
                 {userProfile?._id === user?._id && (
                     <button
-                        className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 self-end my-6"
+                        className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 self-end sm:my-6 my-2"
                         onClick={() => setEditProfile((state) => !state)}
                     >
                         Edit Profile
                     </button>
                 )}
             </div>
-            <div className="grid  grid-cols-[0.6fr_1fr] gap-6">
+            <div className="sm:grid sm:grid-cols-[0.6fr_1fr] sm:gap-6">
                 <div className="">
-                    <div className="my-3 flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] px-6 py-4">
-                        <h3 className="dark:text-white text-xl font-bold">
+                    <div className="sm:my-3 flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] px-6 py-4">
+                        <h2 className="dark:text-white text-xl font-bold">
                             About Me:
-                        </h3>
+                        </h2>
                         <p className="dark:text-white">
                             Member since:{" "}
                             {dayjs(userProfile?.joinDate).format(
@@ -171,7 +171,7 @@ const Profile = ({ user }: Props) => {
                 </div>
                 <div className="">
                     <div className="my-3 flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
-                        <h2 className="my-2 dark:text-white text-2xl font-bold text-center">
+                        <h2 className="my-2 dark:text-white text-xl font-bold text-center">
                             Posts
                         </h2>
                     </div>
@@ -224,7 +224,7 @@ const Profile = ({ user }: Props) => {
                                         </div>
                                     )}
                                 </div>
-                                <p className="dark:text-white px-4 pb-2">
+                                <p className="dark:text-white px-4 py-2">
                                     {post.postContent}
                                 </p>
 

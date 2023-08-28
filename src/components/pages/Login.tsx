@@ -64,7 +64,7 @@ const Login = ({ getUserInfo }: Props) => {
                     setSuccess((state) => !state);
                     setTimeout(() => {
                         navigate("/main");
-                    }, 5000);
+                    }, 1000);
                 } else if (Array.isArray(data.errors)) {
                     // error messages from express validator go here
                     setError(data.errors);
@@ -76,20 +76,20 @@ const Login = ({ getUserInfo }: Props) => {
     };
 
     return (
-        <div className="grid grid-cols-2">
+        <div className="grid sm:grid-cols-2 grid-cols-[0.6fr_1fr] bg-inherit">
             <div className="">
                 <img
                     src={splashPhoto}
                     alt=""
-                    className="w-full h-[calc(100vh-5.25rem)] object-cover"
+                    className="w-full h-[calc(100vh-5.1rem)] sm:h-[calc(100vh-5.40rem)] object-cover"
                 />
             </div>
-            <div className="flex items-center justify-center flex-col">
+            <div className="flex items-center justify-center flex-col mx-4">
                 <div>
-                    <h3 className="text-xl dark:text-white text-center -mt-8 mb-4">
+                    <h1 className="text-xl dark:text-white text-center font-bold -mt-8 mb-4">
                         Welcome to Odin Book
-                    </h3>
-                    <form className="rounded-xl border border-slate-500 p-4 dark:bg-gray-800">
+                    </h1>
+                    <form className="rounded-xl border border-slate-500 p-4 dark:bg-gray-800 bg-white">
                         <label
                             htmlFor="username"
                             className="block font-semibold dark:text-white text-sm"
@@ -154,14 +154,14 @@ const Login = ({ getUserInfo }: Props) => {
                         <div className="flex items-center flex-col">
                             <button
                                 type="submit"
-                                className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                                className="mt-3 rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
                                 onClick={(e) => sendLogin(e)}
                             >
                                 Submit
                             </button>
                             <Link
                                 to="sign-up"
-                                className="mt-3 rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                                className="mt-3 rounded-md border border-transparent bg-green-700 px-2 sm:px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
                             >
                                 Create new account
                             </Link>
@@ -191,7 +191,7 @@ const Login = ({ getUserInfo }: Props) => {
             {success && (
                 <div className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center bg-black/[.7]">
                     <div className="rounded-xl border border-slate-500 dark:bg-slate-800 p-4 bg-white">
-                        <h2 className="text-3xl dark:text-white">
+                        <h2 className="text-2xl sm:text-3xl dark:text-white">
                             Login was successful!
                         </h2>
                     </div>

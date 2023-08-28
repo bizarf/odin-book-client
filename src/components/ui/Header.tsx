@@ -62,55 +62,61 @@ const Header = ({
     }, []);
 
     return (
-        <header className="sticky top-0 z-50 flex w-full border-b-2 bg-white py-4 text-sm dark:border-b-0 dark:bg-gray-800">
-            <nav className="flex w-full flex-row items-center justify-between gap-5 px-5 ">
+        <header className="sticky top-0 z-50 flex w-full border-b-[1px] dark:border-b-transparent bg-white py-2 sm:py-4 text-sm  dark:bg-gray-800">
+            <nav className="sm:flex sm:justify-between sm:w-full sn:flex-row items-center sm:gap-5 sm:px-5">
                 <Link
-                    className="whitespace-nowrap pl-2 text-3xl font-bold text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200 select-none"
+                    className="pl-2 text-2xl sm:text-3xl font-bold text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200 select-none"
                     to="/main"
                 >
                     Odin Book
                 </Link>
-                <div className="inline-flex">
+                <div className="sm:flex text-xs sm:text-sm sm:flex-wrap sm:items-center mt-2 sm:mt-0">
                     <Link
-                        className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
+                        className="px-2 text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
                         to="/main"
                     >
                         Main
                     </Link>
                     <button
-                        className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
+                        className="px-2 text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
                         onClick={() => setEditor((state) => !state)}
                     >
                         Post
                     </button>
                     <Link
-                        className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
+                        className="px-2 text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
                         to="friends-list"
                     >
                         Friends
                     </Link>
                     <Link
-                        className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
+                        className="px-2 text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
                         to="pending-friends"
                     >
                         Pending Friends
                     </Link>
                     <Link
-                        className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
+                        className="px-2 text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
                         to={`profile/${user?._id}`}
                     >
                         Profile
                     </Link>
                     <Link
-                        className="whitespace-nowrap px-2 text-sm text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
+                        className="px-2 text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
                         to="/"
                         onClick={logout}
                     >
                         Logout
                     </Link>
                     {/* dark mode button toggle */}
-                    {theme === "light" && <LightModeBtn setTheme={setTheme} />}
-                    {theme === "dark" && <DarkModeBtn setTheme={setTheme} />}
+                    <div className="absolute top-[0.5rem] right-2 sm:static sm:px-2 mt-1">
+                        {theme === "light" && (
+                            <LightModeBtn setTheme={setTheme} />
+                        )}
+                        {theme === "dark" && (
+                            <DarkModeBtn setTheme={setTheme} />
+                        )}
+                    </div>
                 </div>
             </nav>
         </header>

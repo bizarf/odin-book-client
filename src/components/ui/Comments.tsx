@@ -70,10 +70,10 @@ const Comments = ({ comments, user, post }: Props) => {
                                     <Link
                                         to={`/main/profile/${comment.user._id}`}
                                     >
-                                        <h3 className=" dark:text-white">
+                                        <h2 className=" dark:text-white">
                                             {comment.user.firstname}{" "}
                                             {comment.user.lastname}
-                                        </h3>
+                                        </h2>
                                     </Link>
 
                                     <p className="text-xs text-gray-600 dark:text-gray-300">

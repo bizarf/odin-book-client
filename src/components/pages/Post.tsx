@@ -103,7 +103,7 @@ const Post = ({ user }: Props) => {
     }, []);
 
     return (
-        <div className="grid grid-cols-3 center">
+        <div className="mx-4 sm:grid sm:grid-cols-3 center">
             <div></div>
             <div>
                 {post && (
@@ -127,10 +127,10 @@ const Post = ({ user }: Props) => {
                                 </Link>
                                 <div>
                                     <Link to={`/main/profile/${post.user._id}`}>
-                                        <h3 className=" dark:text-white">
+                                        <h1 className=" dark:text-white">
                                             {post.user.firstname}{" "}
                                             {post.user.lastname}
-                                        </h3>
+                                        </h1>
                                     </Link>
                                     <p className="text-xs text-gray-600 dark:text-gray-300">
                                         Posted on:
@@ -155,7 +155,7 @@ const Post = ({ user }: Props) => {
                                 </div>
                             )}
                         </div>
-                        <p className="dark:text-white px-4 pb-2">
+                        <p className="dark:text-white px-4 py-2">
                             {post.postContent}
                         </p>
 
@@ -169,6 +169,12 @@ const Post = ({ user }: Props) => {
                 )}
                 <div>
                     <form>
+                        <label
+                            htmlFor="comment"
+                            className="sr-only dark:text-white"
+                        >
+                            Comment
+                        </label>
                         <textarea
                             name="comment"
                             id="comment"

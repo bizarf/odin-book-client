@@ -57,11 +57,11 @@ const FriendsList = () => {
 
     return (
         <div>
-            <h2 className="py-4 text-center text-2xl font-bold text-gray-800  dark:text-white">
+            <h1 className="py-4 text-center text-2xl font-bold text-gray-800  dark:text-white">
                 Friends list
-            </h2>
+            </h1>
             {friends.length === 0 && (
-                <div className="mx-96 rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
+                <div className="mx-4 sm:mx-96 rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
                     <h3 className="dark:text-white text-lg text-center">
                         You don't have any friends
                     </h3>
@@ -71,9 +71,9 @@ const FriendsList = () => {
                 return (
                     <div
                         key={index}
-                        className="flex justify-between items-center mx-60 rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] my-2"
+                        className="flex justify-between items-center mx-4 sm:mx-60 rounded-xl border bg-white p-2 sm:p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] my-2"
                     >
-                        <div className="flex items-center py-2 ">
+                        <div className="flex items-center py-2">
                             <Link to={`/main/profile/${friend._id}`}>
                                 {!friend.photo ? (
                                     <img
@@ -90,9 +90,9 @@ const FriendsList = () => {
                                 )}
                             </Link>
                             <div>
-                                <h3 className=" dark:text-white">
+                                <h2 className=" dark:text-white">
                                     {friend.firstname} {friend.lastname}
-                                </h3>
+                                </h2>
 
                                 <p className="text-xs text-gray-600 dark:text-gray-300">
                                     Member since:
@@ -102,14 +102,12 @@ const FriendsList = () => {
                                 </p>
                             </div>
                         </div>
-                        <div>
-                            <button
-                                className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 mr-4"
-                                onClick={() => removeFriend(friend._id)}
-                            >
-                                Unfriend
-                            </button>
-                        </div>
+                        <button
+                            className="rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 sm:mr-4"
+                            onClick={() => removeFriend(friend._id)}
+                        >
+                            Unfriend
+                        </button>
                     </div>
                 );
             })}

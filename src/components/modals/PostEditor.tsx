@@ -127,13 +127,13 @@ const PostEditor = ({
                 <form className="">
                     <div className="flex justify-between pb-2 items-center">
                         {editMode ? (
-                            <h2 className="text-xl dark:text-white">
+                            <h1 className="text-xl dark:text-white">
                                 Edit post
-                            </h2>
+                            </h1>
                         ) : (
-                            <h2 className="text-xl dark:text-white">
+                            <h1 className="text-xl dark:text-white">
                                 Create post
-                            </h2>
+                            </h1>
                         )}
                         <button
                             onClick={(e) => handleCloseEditor(e)}

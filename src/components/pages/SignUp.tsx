@@ -62,13 +62,13 @@ const SignUp = ({ user }: Props) => {
     });
 
     return (
-        <div className="mx-auto flex w-full max-w-sm flex-col dark:bg-slate-600">
-            <h2 className="py-4 text-center text-2xl font-bold text-gray-800  dark:text-white">
+        <div className="mx-4 sm:mx-auto sm:w-full sm:max-w-sm dark:bg-slate-600">
+            <h1 className="py-4 text-center text-2xl font-bold text-gray-800  dark:text-white">
                 Sign Up
-            </h2>
+            </h1>
             <form
                 onSubmit={(e) => handleSignUp(e)}
-                className="mb-4 rounded-xl border border-slate-500 p-4 dark:bg-gray-800"
+                className="mb-4 rounded-xl border border-slate-500 p-4 dark:bg-gray-800 bg-white"
             >
                 <label
                     htmlFor="firstname"
@@ -190,7 +190,7 @@ const SignUp = ({ user }: Props) => {
                 <div className="flex justify-center">
                     <button
                         type="submit"
-                        className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-3 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:bg-green-800 dark:hover:bg-green-900 dark:focus:ring-offset-gray-800"
+                        className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-3 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-offset-gray-800"
                     >
                         Submit
                     </button>
@@ -200,7 +200,7 @@ const SignUp = ({ user }: Props) => {
             {success && (
                 <div className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center bg-black/[.7]">
                     <div className="rounded-xl border border-slate-500 dark:bg-slate-800 p-4 bg-white">
-                        <h2 className="text-3xl dark:text-white">
+                        <h2 className="text-2xl sm:text-3xl dark:text-white">
                             Sign up was successful!
                         </h2>
                     </div>
