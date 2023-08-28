@@ -2,7 +2,7 @@
 
 The goal of this project is to make a Facebook clone using all that I've learnt. This is the client for that clone.
 
--   [View the live site here](link goes here)
+-   [View the live site here](https://bizarf.github.io/odin-book-client/)
 -   [View the book api repo](https://github.com/bizarf/odin-book-api)
 
 #### Install:
@@ -43,5 +43,7 @@ npm run dev
 -   Playwright
 
 <hr>
+
 ##### Credits:
- - Ivan Samkov for splash image photo (https://www.pexels.com/photo/person-writing-on-a-notebook-4240497/)
+
+-   Ivan Samkov for splash image photo (https://www.pexels.com/photo/person-writing-on-a-notebook-4240497/)
