@@ -93,7 +93,7 @@ const PendingFriendsList = ({ user }: Props) => {
                 Pending friend requests
             </h1>
             {pendingFriends.length === 0 && (
-                <div className="mx-4 sm:mx-96 rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
+                <div className="mx-auto w-fit px-4 sm:px-14 rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
                     <h2 className="dark:text-white text-lg text-center">
                         There are no pending friend requests
                     </h2>

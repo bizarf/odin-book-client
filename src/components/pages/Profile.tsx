@@ -139,14 +139,23 @@ const Profile = ({ user }: Props) => {
                     !userProfile?.friends.includes(user._id) &&
                     userProfile?._id !== user._id && (
                         <button
-                            className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 disabled:bg-blue-600 self-end my-6"
+                            className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 disabled:bg-slate-500 self-end my-6"
                             id="addFriendBtn"
                             onClick={sendFriendRequest}
                         >
                             Add Friend
                         </button>
                     )}
-                {userProfile?._id === user?._id && (
+                {userProfile?._id === user?._id &&
+                user?.username === "demo@demo.com" ? (
+                    <button
+                        className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 self-end sm:my-6 my-2 disabled:bg-slate-500"
+                        onClick={() => setEditProfile((state) => !state)}
+                        disabled
+                    >
+                        Edit Profile
+                    </button>
+                ) : (
                     <button
                         className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 self-end sm:my-6 my-2"
                         onClick={() => setEditProfile((state) => !state)}
@@ -164,7 +173,7 @@ const Profile = ({ user }: Props) => {
                         <p className="dark:text-white">
                             Member since:{" "}
                             {dayjs(userProfile?.joinDate).format(
-                                " DD MMM YYYY, hh:mma"
+                                " DD MMM YYYY"
                             )}
                         </p>
                     </div>

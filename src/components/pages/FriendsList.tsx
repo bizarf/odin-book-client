@@ -61,8 +61,8 @@ const FriendsList = () => {
                 Friends list
             </h1>
             {friends.length === 0 && (
-                <div className="mx-4 sm:mx-96 rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]">
-                    <h3 className="dark:text-white text-lg text-center">
+                <div className="rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] w-fit mx-auto sm:px-14 px-10">
+                    <h3 className="dark:text-white text-lg">
                         You don't have any friends
                     </h3>
                 </div>

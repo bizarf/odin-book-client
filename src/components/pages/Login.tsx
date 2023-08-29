@@ -64,7 +64,46 @@ const Login = ({ getUserInfo }: Props) => {
                     setSuccess((state) => !state);
                     setTimeout(() => {
                         navigate("/main");
-                    }, 1000);
+                    }, 500);
+                } else if (Array.isArray(data.errors)) {
+                    // error messages from express validator go here
+                    setError(data.errors);
+                } else {
+                    // if the error message is an object from passport, then we need to put it in an array
+                    setError([data]);
+                }
+            });
+    };
+
+    const handleDemoLogin = (
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        e.preventDefault();
+        setLoading((state) => !state);
+
+        // start fetch api, with a post method and set the header content type to json
+        fetch("https://odin-book-api-5r5e.onrender.com/api/login-demo", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setLoading((state) => !state);
+                // data object can either return a token or errors. if we get the token object, then we decode the token for the exp time and then create a cookie to store the jwt
+                if (data.token) {
+                    const decode: JwtDecodeType = jwtDecode(data.token);
+                    cookies.set("jwt_auth", data.token, {
+                        // multiply the expiration value from the jwt by 1000 to change the value to milliseconds so that it'll become a valid date
+                        expires: new Date(decode.exp * 1000),
+                    });
+                    // this fetches the user's info from the database
+                    getUserInfo();
+                    setSuccess((state) => !state);
+                    setTimeout(() => {
+                        navigate("/main");
+                    }, 500);
                 } else if (Array.isArray(data.errors)) {
                     // error messages from express validator go here
                     setError(data.errors);
@@ -180,6 +219,12 @@ const Login = ({ getUserInfo }: Props) => {
                                     </span>
                                 </div>
                             </Link>
+                            <button
+                                className="mt-3 rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                                onClick={(e) => handleDemoLogin(e)}
+                            >
+                                Try the demo account
+                            </button>
                         </div>
                     </form>
                 </div>
