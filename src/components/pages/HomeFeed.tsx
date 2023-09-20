@@ -16,7 +16,7 @@ type Props = {
 
 const HomeFeed = ({ setEditor, user }: Props) => {
     const [posts, setPosts] = useState<[PostType] | []>([]);
-    const loadingRef = useRef<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const cookies = new Cookies();
 
@@ -31,7 +31,6 @@ const HomeFeed = ({ setEditor, user }: Props) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                loadingRef.current = false;
                 if (data.success === true) {
                     const myPostFeedBtn =
                         document.querySelector("#myPostFeedBtn");
@@ -58,6 +57,9 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                     );
                     setPosts([...data.timeline] as [PostType]);
                 }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -159,10 +161,10 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                         Create post
                     </button>
                 </div>
-                {posts.map((post, index) => {
+                {posts.map((post) => {
                     return (
                         <div
-                            key={index}
+                            key={post._id}
                             className="my-3 flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]"
                         >
                             <div className="flex items-center justify-between mx-4 pt-1 border-b-2 dark:border-gray-600">
@@ -235,7 +237,7 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                     </div>
                 )}
             </div>
-            {loadingRef.current && (
+            {loading && (
                 // this setup prevents clicking of elements whilst the loading spinner is active
                 <LoadingSpinner />
             )}

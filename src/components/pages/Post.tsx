@@ -19,7 +19,7 @@ const Post = ({ user }: Props) => {
     const [post, setPost] = useState<PostType>();
     const [comments, setComments] = useState<CommentType[] | []>([]);
     const [comment, setComment] = useState<string>();
-    const loadingRef = useRef<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<[ErrorsType] | []>([]);
 
     const cookies = new Cookies();
@@ -58,10 +58,12 @@ const Post = ({ user }: Props) => {
         )
             .then((res) => res.json())
             .then((data) => {
-                loadingRef.current = false;
                 if (data) {
                     setComments(data.allComments);
                 }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -69,7 +71,7 @@ const Post = ({ user }: Props) => {
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
         e.preventDefault();
-        loadingRef.current = true;
+        setLoading(true);
 
         fetch(
             `https://odin-book-api-5r5e.onrender.com/api/post/${id}/comment`,
@@ -85,8 +87,6 @@ const Post = ({ user }: Props) => {
         )
             .then((res) => res.json())
             .then((data) => {
-                loadingRef.current = false;
-
                 // the data object has a success boolean variable. if it's true, then close the post editor and then either send the user back to the main page or refresh the page
                 if (data.success === true) {
                     navigate(0);
@@ -94,6 +94,9 @@ const Post = ({ user }: Props) => {
                     // error messages from express validator go here
                     setError(data.errors);
                 }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -209,7 +212,7 @@ const Post = ({ user }: Props) => {
                 <Comments comments={comments} user={user} post={post} />
             </div>
             <div></div>
-            {loadingRef.current && (
+            {loading && (
                 // this setup prevents clicking of elements whilst the loading spinner is active
                 <LoadingSpinner />
             )}

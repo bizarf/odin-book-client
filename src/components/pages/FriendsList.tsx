@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
 import FriendProfileType from "../../types/friendProfileType";
@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 
 const FriendsList = () => {
     const [friends, setFriends] = useState<[FriendProfileType] | []>([]);
-    const loadingRef = useRef<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const cookies = new Cookies();
 
@@ -22,12 +22,14 @@ const FriendsList = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                loadingRef.current = false;
                 if (data.success === true) {
                     setFriends([...data.friendsList.friends] as [
                         FriendProfileType,
                     ]);
                 }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -67,10 +69,10 @@ const FriendsList = () => {
                     </h3>
                 </div>
             )}
-            {friends.map((friend, index) => {
+            {friends.map((friend) => {
                 return (
                     <div
-                        key={index}
+                        key={friend._id}
                         className="flex justify-between items-center mx-4 sm:mx-60 rounded-xl border bg-white p-2 sm:p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] my-2"
                     >
                         <div className="flex items-center py-2">
@@ -111,7 +113,7 @@ const FriendsList = () => {
                     </div>
                 );
             })}
-            {loadingRef.current && (
+            {loading && (
                 // this setup prevents clicking of elements whilst the loading spinner is active
                 <LoadingSpinner />
             )}

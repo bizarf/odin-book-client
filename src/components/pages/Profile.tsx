@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import UserType from "../../types/userType";
 import PostType from "../../types/postType";
 import { useParams } from "react-router-dom";
@@ -17,7 +17,7 @@ type Props = {
 const Profile = ({ user }: Props) => {
     const [userProfile, setUserProfile] = useState<UserType>();
     const [posts, setPosts] = useState<[PostType] | []>([]);
-    const loadingRef = useRef<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
     const [friendRequestFail, setFriendRequestFail] = useState<boolean>(false);
     const [editProfile, setEditProfile] = useState<boolean>(false);
 
@@ -36,10 +36,12 @@ const Profile = ({ user }: Props) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                loadingRef.current = false;
                 if (data.success === true) {
                     setUserProfile(data.user);
                 }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -54,10 +56,12 @@ const Profile = ({ user }: Props) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                loadingRef.current = false;
                 if (data.success === true) {
                     setPosts([...data.userPosts] as [PostType]);
                 }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -75,8 +79,6 @@ const Profile = ({ user }: Props) => {
         )
             .then((res) => res.json())
             .then((data) => {
-                loadingRef.current = false;
-
                 // the data object has a success boolean variable. if it's true, then close the post editor and then either send the user back to the main page or refresh the page
                 if (data.success === true) {
                     const addFriendBtn = document.querySelector(
@@ -184,10 +186,10 @@ const Profile = ({ user }: Props) => {
                             Posts
                         </h2>
                     </div>
-                    {posts.map((post, index) => {
+                    {posts.map((post) => {
                         return (
                             <div
-                                key={index}
+                                key={post._id}
                                 className="my-3 flex flex-col rounded-xl border bg-white shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7]"
                             >
                                 <div className="flex items-center justify-between mx-4 pt-1 border-b-2 dark:border-gray-600">
@@ -259,7 +261,7 @@ const Profile = ({ user }: Props) => {
                     )}
                 </div>
             </div>
-            {loadingRef.current && (
+            {loading && (
                 // this setup prevents clicking of elements whilst the loading spinner is active
                 <LoadingSpinner />
             )}

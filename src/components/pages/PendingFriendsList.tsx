@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
 import FriendRequestType from "../../types/friendRequestType";
@@ -14,7 +14,7 @@ const PendingFriendsList = ({ user }: Props) => {
     const [pendingFriends, setPendingFriends] = useState<
         [FriendRequestType] | []
     >([]);
-    const loadingRef = useRef<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(true);
 
     const cookies = new Cookies();
 
@@ -32,14 +32,15 @@ const PendingFriendsList = ({ user }: Props) => {
         )
             .then((res) => res.json())
             .then((data) => {
-                loadingRef.current = false;
-                // console.log(data);
                 if (data.success === true) {
                     setPendingFriends([...data.existingRequest] as [
                         FriendRequestType,
                     ]);
                     // console.log(pendingFriends);
                 }
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
@@ -99,11 +100,11 @@ const PendingFriendsList = ({ user }: Props) => {
                     </h2>
                 </div>
             )}
-            {pendingFriends.map((request, index) => {
+            {pendingFriends.map((request) => {
                 if (request.receiver._id === user?._id) {
                     return (
                         <div
-                            key={index}
+                            key={request._id}
                             className="flex justify-between items-center mx-4 sm:mx-60 rounded-xl border bg-white p-2 sm:p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] my-2"
                         >
                             <div className="flex items-center py-2">
@@ -161,7 +162,7 @@ const PendingFriendsList = ({ user }: Props) => {
                 } else {
                     return (
                         <div
-                            key={index}
+                            key={request._id}
                             className="flex justify-between items-center mx-60 rounded-xl border bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:shadow-slate-700/[.7] my-2"
                         >
                             <div className="flex items-center py-2 ">
@@ -212,7 +213,7 @@ const PendingFriendsList = ({ user }: Props) => {
                     );
                 }
             })}
-            {loadingRef.current && (
+            {loading && (
                 // this setup prevents clicking of elements whilst the loading spinner is active
                 <LoadingSpinner />
             )}
