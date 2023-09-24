@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import PostType from "../../types/postType";
 import CommentType from "../../types/commentType";
 import Cookies from "universal-cookie";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
 import PostType from "../../types/postType";

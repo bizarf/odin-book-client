@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import UserType from "../../types/userType";
 import PostType from "../../types/postType";
 import { useParams } from "react-router-dom";
@@ -20,6 +20,7 @@ const Profile = ({ user }: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [friendRequestFail, setFriendRequestFail] = useState<boolean>(false);
     const [editProfile, setEditProfile] = useState<boolean>(false);
+    const addFriendBtn = useRef<HTMLButtonElement>(null);
 
     const { userId } = useParams();
     const cookies = new Cookies();
@@ -81,25 +82,19 @@ const Profile = ({ user }: Props) => {
             .then((data) => {
                 // the data object has a success boolean variable. if it's true, then close the post editor and then either send the user back to the main page or refresh the page
                 if (data.success === true) {
-                    const addFriendBtn = document.querySelector(
-                        "#addFriendBtn"
-                    ) as HTMLButtonElement;
-                    if (addFriendBtn) {
-                        addFriendBtn.textContent = "Sent";
-                        addFriendBtn.disabled = true;
+                    if (addFriendBtn.current) {
+                        addFriendBtn.current.textContent = "Sent";
+                        addFriendBtn.current.disabled = true;
                     }
                 } else {
                     // error messages from express validator go here
                     setFriendRequestFail((state) => !state);
-                    const addFriendBtn = document.querySelector(
-                        "#addFriendBtn"
-                    ) as HTMLButtonElement;
-                    if (addFriendBtn) {
-                        addFriendBtn.disabled = true;
+                    if (addFriendBtn.current) {
+                        addFriendBtn.current.disabled = true;
                     }
                     setTimeout(() => {
                         setFriendRequestFail((state) => !state);
-                    }, 4000);
+                    }, 1000);
                 }
             });
     };
@@ -142,28 +137,35 @@ const Profile = ({ user }: Props) => {
                     userProfile?._id !== user._id && (
                         <button
                             className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 disabled:bg-slate-500 self-end my-6"
-                            id="addFriendBtn"
+                            // id="addFriendBtn"
+                            ref={addFriendBtn}
                             onClick={sendFriendRequest}
                         >
                             Add Friend
                         </button>
                     )}
-                {userProfile?._id === user?._id &&
-                user?.username === "demo@demo.com" ? (
+                {user?.username === "demo@demo.com" &&
+                userProfile?.username === "demo@demo.com" ? (
                     <button
                         className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 self-end sm:my-6 my-2 disabled:bg-slate-500"
-                        onClick={() => setEditProfile((state) => !state)}
                         disabled
                     >
                         Edit Profile
                     </button>
                 ) : (
-                    <button
-                        className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 self-end sm:my-6 my-2"
-                        onClick={() => setEditProfile((state) => !state)}
-                    >
-                        Edit Profile
-                    </button>
+                    <>
+                        {userProfile?._id === user?._id &&
+                            user?.username !== "demo@demo.com" && (
+                                <button
+                                    className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 self-end sm:my-6 my-2"
+                                    onClick={() =>
+                                        setEditProfile((state) => !state)
+                                    }
+                                >
+                                    Edit Profile
+                                </button>
+                            )}
+                    </>
                 )}
             </div>
             <div className="sm:grid sm:grid-cols-[0.6fr_1fr] sm:gap-6">
