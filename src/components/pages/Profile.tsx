@@ -20,7 +20,7 @@ const Profile = ({ user }: Props) => {
     const [loading, setLoading] = useState<boolean>(true);
     const [friendRequestFail, setFriendRequestFail] = useState<boolean>(false);
     const [editProfile, setEditProfile] = useState<boolean>(false);
-    const addFriendBtn = useRef<HTMLButtonElement>(null);
+    const addFriendBtnRef = useRef<HTMLButtonElement>(null);
 
     const { userId } = useParams();
     const cookies = new Cookies();
@@ -82,15 +82,15 @@ const Profile = ({ user }: Props) => {
             .then((data) => {
                 // the data object has a success boolean variable. if it's true, then close the post editor and then either send the user back to the main page or refresh the page
                 if (data.success === true) {
-                    if (addFriendBtn.current) {
-                        addFriendBtn.current.textContent = "Sent";
-                        addFriendBtn.current.disabled = true;
+                    if (addFriendBtnRef.current) {
+                        addFriendBtnRef.current.textContent = "Sent";
+                        addFriendBtnRef.current.disabled = true;
                     }
                 } else {
                     // error messages from express validator go here
                     setFriendRequestFail((state) => !state);
-                    if (addFriendBtn.current) {
-                        addFriendBtn.current.disabled = true;
+                    if (addFriendBtnRef.current) {
+                        addFriendBtnRef.current.disabled = true;
                     }
                     setTimeout(() => {
                         setFriendRequestFail((state) => !state);
@@ -137,8 +137,7 @@ const Profile = ({ user }: Props) => {
                     userProfile?._id !== user._id && (
                         <button
                             className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 disabled:bg-slate-500 self-end my-6"
-                            // id="addFriendBtn"
-                            ref={addFriendBtn}
+                            ref={addFriendBtnRef}
                             onClick={sendFriendRequest}
                         >
                             Add Friend

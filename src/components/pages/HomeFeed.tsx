@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
 import PostType from "../../types/postType";
@@ -17,6 +17,8 @@ type Props = {
 const HomeFeed = ({ setEditor, user }: Props) => {
     const [posts, setPosts] = useState<[PostType] | []>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const myPostFeedBtnRef = useRef<HTMLButtonElement>(null);
+    const globalFeedBtnRef = useRef<HTMLButtonElement>(null);
 
     const cookies = new Cookies();
 
@@ -32,29 +34,28 @@ const HomeFeed = ({ setEditor, user }: Props) => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.success === true) {
-                    const myPostFeedBtn =
-                        document.querySelector("#myPostFeedBtn");
-                    const globalFeedBtn =
-                        document.querySelector("#globalFeedBtn");
-
-                    myPostFeedBtn?.classList.replace(
-                        "dark:text-white",
-                        "dark:text-blue-400"
-                    );
-                    myPostFeedBtn?.classList.add("font-semibold");
-                    myPostFeedBtn?.classList.replace(
-                        "border-transparent",
-                        "border-blue-400"
-                    );
-                    globalFeedBtn?.classList.replace(
-                        "dark:text-blue-400",
-                        "dark:text-white"
-                    );
-                    globalFeedBtn?.classList.remove("font-semibold");
-                    globalFeedBtn?.classList.replace(
-                        "border-blue-400",
-                        "border-transparent"
-                    );
+                    if (myPostFeedBtnRef.current && globalFeedBtnRef.current) {
+                        myPostFeedBtnRef.current.classList.replace(
+                            "dark:text-white",
+                            "dark:text-blue-400"
+                        );
+                        myPostFeedBtnRef.current.classList.add("font-semibold");
+                        myPostFeedBtnRef.current.classList.replace(
+                            "border-transparent",
+                            "border-blue-400"
+                        );
+                        globalFeedBtnRef.current.classList.replace(
+                            "dark:text-blue-400",
+                            "dark:text-white"
+                        );
+                        globalFeedBtnRef.current.classList.remove(
+                            "font-semibold"
+                        );
+                        globalFeedBtnRef.current.classList.replace(
+                            "border-blue-400",
+                            "border-transparent"
+                        );
+                    }
                     setPosts([...data.timeline] as [PostType]);
                 }
             })
@@ -75,29 +76,28 @@ const HomeFeed = ({ setEditor, user }: Props) => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.success === true) {
-                    const myPostFeedBtn =
-                        document.querySelector("#myPostFeedBtn");
-                    const globalFeedBtn =
-                        document.querySelector("#globalFeedBtn");
-
-                    myPostFeedBtn?.classList.replace(
-                        "dark:text-blue-400",
-                        "dark:text-white"
-                    );
-                    myPostFeedBtn?.classList.remove("font-semibold");
-                    myPostFeedBtn?.classList.replace(
-                        "border-blue-400",
-                        "border-transparent"
-                    );
-                    globalFeedBtn?.classList.replace(
-                        "dark:text-white",
-                        "dark:text-blue-400"
-                    );
-                    globalFeedBtn?.classList.add("font-semibold");
-                    globalFeedBtn?.classList.replace(
-                        "border-transparent",
-                        "border-blue-400"
-                    );
+                    if (myPostFeedBtnRef.current && globalFeedBtnRef.current) {
+                        myPostFeedBtnRef.current.classList.replace(
+                            "dark:text-blue-400",
+                            "dark:text-white"
+                        );
+                        myPostFeedBtnRef.current.classList.remove(
+                            "font-semibold"
+                        );
+                        myPostFeedBtnRef.current.classList.replace(
+                            "border-blue-400",
+                            "border-transparent"
+                        );
+                        globalFeedBtnRef.current.classList.replace(
+                            "dark:text-white",
+                            "dark:text-blue-400"
+                        );
+                        globalFeedBtnRef.current.classList.add("font-semibold");
+                        globalFeedBtnRef.current.classList.replace(
+                            "border-transparent",
+                            "border-blue-400"
+                        );
+                    }
                     setPosts([...data.globalTimeline] as [PostType]);
                 }
             });
@@ -138,7 +138,7 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                         <button
                             type="button"
                             className="py-2 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 dark:text-white"
-                            id="myPostFeedBtn"
+                            ref={myPostFeedBtnRef}
                             onClick={getPosts}
                         >
                             My feed
@@ -146,7 +146,7 @@ const HomeFeed = ({ setEditor, user }: Props) => {
                         <button
                             type="button"
                             className="py-2 px-1 inline-flex items-center gap-2 border-b-[3px] border-transparent text-sm whitespace-nowrap text-gray-500 hover:text-blue-600 dark:text-white"
-                            id="globalFeedBtn"
+                            ref={globalFeedBtnRef}
                             onClick={getGlobalFeed}
                         >
                             Global
