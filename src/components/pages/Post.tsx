@@ -27,46 +27,6 @@ const Post = ({ user }: Props) => {
     const { id } = useParams();
     const jwt = cookies.get("jwt_auth");
 
-    // fetches post from database
-    const getPost = () => {
-        fetch(`https://odin-book-api-5r5e.onrender.com/api/post/${id}`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data) {
-                    setPost(data);
-                }
-            });
-    };
-
-    // fetches comments
-    const getComments = () => {
-        fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/post/${id}/comments`,
-            {
-                method: "get",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                if (data) {
-                    setComments(data.allComments);
-                }
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
-
     const postComment = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
@@ -101,9 +61,49 @@ const Post = ({ user }: Props) => {
     };
 
     useEffect(() => {
+        // fetches post from database
+        const getPost = () => {
+            fetch(`https://odin-book-api-5r5e.onrender.com/api/post/${id}`, {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwt}`,
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data) {
+                        setPost(data);
+                    }
+                });
+        };
+
+        // fetches comments
+        const getComments = () => {
+            fetch(
+                `https://odin-book-api-5r5e.onrender.com/api/post/${id}/comments`,
+                {
+                    method: "get",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${jwt}`,
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data) {
+                        setComments(data.allComments);
+                    }
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        };
+
         getPost();
         getComments();
-    }, []);
+    }, [id, jwt]);
 
     return (
         <div className="mx-4 sm:grid sm:grid-cols-3 center">

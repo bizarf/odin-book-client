@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import UserType from "../../types/userType";
 import PostType from "../../types/postType";
 import { useParams } from "react-router-dom";
@@ -23,48 +23,7 @@ const Profile = ({ user }: Props) => {
     const addFriendBtnRef = useRef<HTMLButtonElement>(null);
 
     const { userId } = useParams();
-    const cookies = new Cookies();
-
-    const getUserProfile = () => {
-        const jwt = cookies.get("jwt_auth");
-
-        fetch(`https://odin-book-api-5r5e.onrender.com/api/profile/${userId}`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success === true) {
-                    setUserProfile(data.user);
-                }
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
-
-    const getUserPosts = () => {
-        const jwt = cookies.get("jwt_auth");
-        fetch(`https://odin-book-api-5r5e.onrender.com/api/posts/${userId}`, {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success === true) {
-                    setPosts([...data.userPosts] as [PostType]);
-                }
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    };
+    const cookies = useMemo(() => new Cookies(), []);
 
     const sendFriendRequest = () => {
         const jwt = cookies.get("jwt_auth");
@@ -100,9 +59,56 @@ const Profile = ({ user }: Props) => {
     };
 
     useEffect(() => {
+        const getUserProfile = () => {
+            const jwt = cookies.get("jwt_auth");
+
+            fetch(
+                `https://odin-book-api-5r5e.onrender.com/api/profile/${userId}`,
+                {
+                    method: "get",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${jwt}`,
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success === true) {
+                        setUserProfile(data.user);
+                    }
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        };
+
+        const getUserPosts = () => {
+            const jwt = cookies.get("jwt_auth");
+            fetch(
+                `https://odin-book-api-5r5e.onrender.com/api/posts/${userId}`,
+                {
+                    method: "get",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${jwt}`,
+                    },
+                }
+            )
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.success === true) {
+                        setPosts([...data.userPosts] as [PostType]);
+                    }
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        };
+
         getUserProfile();
         getUserPosts();
-    }, []);
+    }, [cookies, userId]);
 
     return (
         <div className="sm:mx-20 mx-4">
@@ -195,7 +201,7 @@ const Profile = ({ user }: Props) => {
                             >
                                 <div className="flex items-center justify-between mx-4 pt-1 border-b-2 dark:border-gray-600">
                                     <div className="flex items-center py-2">
-                                        {!user?.photo ? (
+                                        {!userProfile?.photo ? (
                                             <img
                                                 className="inline-block h-[2.875rem] w-[2.875rem] rounded-full ring-2 ring-white dark:ring-gray-800 mr-4"
                                                 src="./placeholder_profile.webp"
@@ -204,7 +210,7 @@ const Profile = ({ user }: Props) => {
                                         ) : (
                                             <img
                                                 className="inline-block h-[2.875rem] w-[2.875rem] rounded-full ring-2 ring-white dark:ring-gray-800 mr-4"
-                                                src={user.photo}
+                                                src={userProfile.photo}
                                                 alt="User avatar"
                                             />
                                         )}
