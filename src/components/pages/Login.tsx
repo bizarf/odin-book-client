@@ -198,7 +198,7 @@ const Login = ({ getUserInfo }: Props) => {
                             >
                                 Submit
                             </button>
-                            <Link
+                            {/* <Link
                                 to="sign-up"
                                 className="mt-3 rounded-md border border-transparent bg-green-700 px-2 sm:px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
                             >
@@ -216,6 +216,21 @@ const Login = ({ getUserInfo }: Props) => {
                                     />
                                     <span className="ml-2">
                                         Continue with Facebook
+                                    </span>
+                                </div>
+                            </Link> */}
+                            <Link
+                                to="https://odin-book-api-5r5e.onrender.com/api/github-login/"
+                                className="mt-3 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                            >
+                                <div className="flex items-center">
+                                    <img
+                                        src="./github-mark-white.svg"
+                                        className="w-6"
+                                        alt="GitHub logo"
+                                    />
+                                    <span className="ml-2">
+                                        Continue with GitHub
                                     </span>
                                 </div>
                             </Link>

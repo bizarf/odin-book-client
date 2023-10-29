@@ -66,6 +66,12 @@ const App = () => {
                             <HandleFacebookLogin getUserInfo={getUserInfo} />
                         }
                     />
+                    <Route
+                        path="github-login"
+                        element={
+                            <HandleFacebookLogin getUserInfo={getUserInfo} />
+                        }
+                    />
                     {/* sign up page for user accounts */}
                     <Route path="sign-up" element={<SignUp user={user} />} />
                 </Route>
