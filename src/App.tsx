@@ -2,7 +2,6 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import "./App.css";
 import { useState } from "react";
 import Login from "./components/pages/Login";
-import UserType from "./types/userType";
 import SignUp from "./components/pages/SignUp";
 import MainLayout from "./components/layouts/MainLayout";
 import HomeFeed from "./components/pages/HomeFeed";
@@ -15,12 +14,12 @@ import Profile from "./components/pages/Profile";
 import Cookies from "universal-cookie";
 import jwtDecode from "jwt-decode";
 import JwtDecodeType from "./types/jwtDecode";
+import useUserStore from "./stores/useUserStore";
 
 const App = () => {
-    // sets dark mode
-    const [theme, setTheme] = useState<string>();
-    // user object
-    const [user, setUser] = useState<UserType>();
+    // user setter function
+    const { setUser } = useUserStore();
+
     // post editor modal
     const [editor, setEditor] = useState<boolean>(false);
 
@@ -51,10 +50,7 @@ const App = () => {
         <HashRouter>
             <Routes>
                 {/* use a shared layout for the opening splash page */}
-                <Route
-                    path="/"
-                    element={<SplashLayout theme={theme} setTheme={setTheme} />}
-                >
+                <Route path="/" element={<SplashLayout />}>
                     {/* main page for the "/" path is the login page */}
                     <Route
                         index
@@ -73,7 +69,7 @@ const App = () => {
                         }
                     />
                     {/* sign up page for user accounts */}
-                    <Route path="sign-up" element={<SignUp user={user} />} />
+                    <Route path="sign-up" element={<SignUp />} />
                 </Route>
 
                 {/* use a shared layout for the main app */}
@@ -81,30 +77,20 @@ const App = () => {
                     path="/main"
                     element={
                         <MainLayout
-                            theme={theme}
-                            setTheme={setTheme}
-                            user={user}
-                            setUser={setUser}
                             editor={editor}
                             setEditor={setEditor}
                             getUserInfo={getUserInfo}
                         />
                     }
                 >
-                    <Route
-                        index
-                        element={<HomeFeed setEditor={setEditor} user={user} />}
-                    />
+                    <Route index element={<HomeFeed setEditor={setEditor} />} />
                     <Route path="friends-list" element={<FriendsList />} />
                     <Route
                         path="pending-friends"
-                        element={<PendingFriendsList user={user} />}
+                        element={<PendingFriendsList />}
                     />
-                    <Route path="post/:id" element={<Post user={user} />} />
-                    <Route
-                        path="profile/:userId"
-                        element={<Profile user={user} />}
-                    />
+                    <Route path="post/:id" element={<Post />} />
+                    <Route path="profile/:userId" element={<Profile />} />
                 </Route>
             </Routes>
         </HashRouter>

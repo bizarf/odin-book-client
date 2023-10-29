@@ -6,15 +6,17 @@ import dayjs from "dayjs";
 import PostControls from "../ui/PostControls";
 import LikeBtn from "../ui/LikeBtn";
 import CommentsBtn from "../ui/CommentsBtn";
-import UserType from "../../types/userType";
 import { Link } from "react-router-dom";
+import useUserStore from "../../stores/useUserStore";
 
 type Props = {
     setEditor: React.Dispatch<React.SetStateAction<boolean>>;
-    user: UserType | undefined;
 };
 
-const HomeFeed = ({ setEditor, user }: Props) => {
+const HomeFeed = ({ setEditor }: Props) => {
+    // user state
+    const { user } = useUserStore();
+
     const [posts, setPosts] = useState<[PostType] | []>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const myPostFeedBtnRef = useRef<HTMLButtonElement>(null);

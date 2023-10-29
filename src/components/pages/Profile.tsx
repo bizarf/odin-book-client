@@ -9,12 +9,12 @@ import CommentsBtn from "../ui/CommentsBtn";
 import dayjs from "dayjs";
 import PostControls from "../ui/PostControls";
 import ProfileEditor from "../modals/ProfileEditor";
+import useUserStore from "../../stores/useUserStore";
 
-type Props = {
-    user: UserType | undefined;
-};
+const Profile = () => {
+    // user state
+    const { user } = useUserStore();
 
-const Profile = ({ user }: Props) => {
     const [userProfile, setUserProfile] = useState<UserType>();
     const [posts, setPosts] = useState<[PostType] | []>([]);
     const [loading, setLoading] = useState<boolean>(true);

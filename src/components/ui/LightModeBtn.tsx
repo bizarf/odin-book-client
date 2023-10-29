@@ -1,10 +1,9 @@
-import React from "react";
+import useThemeStore from "../../stores/useThemeStore";
 
-type Props = {
-    setTheme: React.Dispatch<React.SetStateAction<string | undefined>>;
-};
+const LightModeBtn = () => {
+    // setTheme function from the store
+    const { setTheme } = useThemeStore();
 
-const LightModeBtn = ({ setTheme }: Props) => {
     return (
         <>
             <button

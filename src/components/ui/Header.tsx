@@ -1,27 +1,23 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
-import UserType from "../../types/userType";
 import LightModeBtn from "./LightModeBtn";
 import DarkModeBtn from "./DarkModeBtn";
+import useThemeStore from "../../stores/useThemeStore";
+import useUserStore from "../../stores/useUserStore";
 
 type Props = {
-    theme: string | undefined;
-    setTheme: React.Dispatch<React.SetStateAction<string | undefined>>;
-    user: UserType | undefined;
-    setUser: React.Dispatch<React.SetStateAction<UserType | undefined>>;
     setEditor: React.Dispatch<React.SetStateAction<boolean>>;
     getUserInfo: () => void;
 };
 
-const Header = ({
-    theme,
-    setTheme,
-    user,
-    setUser,
-    setEditor,
-    getUserInfo,
-}: Props) => {
+const Header = ({ setEditor, getUserInfo }: Props) => {
+    // theme state and theme setter function
+    const { theme, setTheme } = useThemeStore();
+
+    // user state and user setter function
+    const { user, setUser } = useUserStore();
+
     useEffect(() => {
         const pageTheme = localStorage.getItem("theme") || "light";
         setTheme(pageTheme);
@@ -110,12 +106,8 @@ const Header = ({
                     </Link>
                     {/* dark mode button toggle */}
                     <div className="absolute top-[0.5rem] right-2 sm:static sm:px-2 mt-1">
-                        {theme === "light" && (
-                            <LightModeBtn setTheme={setTheme} />
-                        )}
-                        {theme === "dark" && (
-                            <DarkModeBtn setTheme={setTheme} />
-                        )}
+                        {theme === "light" && <LightModeBtn />}
+                        {theme === "dark" && <DarkModeBtn />}
                     </div>
                 </div>
             </nav>

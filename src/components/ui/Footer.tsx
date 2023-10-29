@@ -1,10 +1,9 @@
 // import React from "react";
+import useThemeStore from "../../stores/useThemeStore";
 
-type Props = {
-    theme: string | undefined;
-};
+const Footer = () => {
+    const { theme } = useThemeStore();
 
-const Footer = ({ theme }: Props) => {
     return (
         <footer className="inline-flex flex-shrink-0 justify-center border-t-[1px] py-1 text-sm  dark:bg-gray-800 dark:text-white dark:border-t-transparent bg-white">
             <a

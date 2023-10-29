@@ -2,15 +2,14 @@ import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
 import FriendRequestType from "../../types/friendRequestType";
-import UserType from "../../types/userType";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import useUserStore from "../../stores/useUserStore";
 
-type Props = {
-    user: UserType | undefined;
-};
+const PendingFriendsList = () => {
+    // user state
+    const { user } = useUserStore();
 
-const PendingFriendsList = ({ user }: Props) => {
     const [pendingFriends, setPendingFriends] = useState<
         [FriendRequestType] | []
     >([]);

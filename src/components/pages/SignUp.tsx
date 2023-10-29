@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import UserType from "../../types/userType";
 import { useNavigate } from "react-router-dom";
 import ErrorsType from "../../types/errorsType";
 import LoadingSpinner from "../LoadingSpinner";
+import useUserStore from "../../stores/useUserStore";
 
-type Props = {
-    user: UserType | undefined;
-};
+const SignUp = () => {
+    // user state
+    const { user } = useUserStore();
 
-const SignUp = ({ user }: Props) => {
     const [firstname, setFirstname] = useState<string>();
     const [lastname, setLastname] = useState<string>();
     const [username, setUsername] = useState<string>();

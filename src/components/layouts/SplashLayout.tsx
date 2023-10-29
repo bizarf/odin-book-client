@@ -1,15 +1,14 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
 import Footer from "../ui/Footer";
 import LightModeBtn from "../ui/LightModeBtn";
 import DarkModeBtn from "../ui/DarkModeBtn";
+import useThemeStore from "../../stores/useThemeStore";
 
-type Props = {
-    theme: string | undefined;
-    setTheme: React.Dispatch<React.SetStateAction<string | undefined>>;
-};
+const SplashLayout = () => {
+    // theme state and theme setter function
+    const { theme, setTheme } = useThemeStore();
 
-const SplashLayout = ({ theme, setTheme }: Props) => {
     useEffect(() => {
         const pageTheme = localStorage.getItem("theme") || "light";
         setTheme(pageTheme);
@@ -41,12 +40,8 @@ const SplashLayout = ({ theme, setTheme }: Props) => {
                         Odin Book
                     </Link>
                     <div className="absolute top-[0.8] right-4 sm:static">
-                        {theme === "light" && (
-                            <LightModeBtn setTheme={setTheme} />
-                        )}
-                        {theme === "dark" && (
-                            <DarkModeBtn setTheme={setTheme} />
-                        )}
+                        {theme === "light" && <LightModeBtn />}
+                        {theme === "dark" && <DarkModeBtn />}
                     </div>
                 </div>
                 <Outlet />

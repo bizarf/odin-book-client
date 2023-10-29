@@ -8,14 +8,13 @@ import LikeBtn from "../ui/LikeBtn";
 import dayjs from "dayjs";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import ErrorsType from "../../types/errorsType";
-import UserType from "../../types/userType";
 import Comments from "../ui/Comments";
+import useUserStore from "../../stores/useUserStore";
 
-type Props = {
-    user: UserType | undefined;
-};
+const Post = () => {
+    // user state
+    const { user } = useUserStore();
 
-const Post = ({ user }: Props) => {
     const [post, setPost] = useState<PostType>();
     const [comments, setComments] = useState<CommentType[] | []>([]);
     const [comment, setComment] = useState<string>();
