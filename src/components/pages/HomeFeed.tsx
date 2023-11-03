@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
 import PostType from "../../types/postType";
@@ -8,14 +8,13 @@ import LikeBtn from "../ui/LikeBtn";
 import CommentsBtn from "../ui/CommentsBtn";
 import { Link } from "react-router-dom";
 import useUserStore from "../../stores/useUserStore";
+import useEditorStore from "../../stores/useEditorStore";
 
-type Props = {
-    setEditor: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const HomeFeed = ({ setEditor }: Props) => {
+const HomeFeed = () => {
     // user state
     const { user } = useUserStore();
+    // editor setter
+    const { setEditor } = useEditorStore();
 
     const [posts, setPosts] = useState<[PostType] | []>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -158,7 +157,7 @@ const HomeFeed = ({ setEditor }: Props) => {
                 <div className="flex justify-center">
                     <button
                         className="mt-3 rounded-md border border-transparent bg-blue-600 px-14 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
-                        onClick={() => setEditor((state) => !state)}
+                        onClick={setEditor}
                     >
                         Create post
                     </button>

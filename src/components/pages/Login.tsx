@@ -64,6 +64,8 @@ const Login = ({ getUserInfo }: Props) => {
                     setSuccess((state) => !state);
                     setTimeout(() => {
                         navigate("/main");
+                        // refresh. not sure why, but the app isn't re-rendering after the above navigate.
+                        navigate(0);
                     }, 500);
                 } else if (Array.isArray(data.errors)) {
                     // error messages from express validator go here
@@ -103,6 +105,7 @@ const Login = ({ getUserInfo }: Props) => {
                     setSuccess((state) => !state);
                     setTimeout(() => {
                         navigate("/main");
+                        navigate(0);
                     }, 500);
                 } else if (Array.isArray(data.errors)) {
                     // error messages from express validator go here
@@ -198,13 +201,13 @@ const Login = ({ getUserInfo }: Props) => {
                             >
                                 Submit
                             </button>
-                            {/* <Link
+                            <Link
                                 to="sign-up"
                                 className="mt-3 rounded-md border border-transparent bg-green-700 px-2 sm:px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
                             >
                                 Create new account
                             </Link>
-                            <Link
+                            {/* <Link
                                 to="https://odin-book-api-5r5e.onrender.com/api/facebook-login"
                                 className="mt-3 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
                             >

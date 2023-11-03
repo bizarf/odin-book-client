@@ -1,22 +1,25 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 import LightModeBtn from "./LightModeBtn";
 import DarkModeBtn from "./DarkModeBtn";
 import useThemeStore from "../../stores/useThemeStore";
 import useUserStore from "../../stores/useUserStore";
+import useEditorStore from "../../stores/useEditorStore";
 
 type Props = {
-    setEditor: React.Dispatch<React.SetStateAction<boolean>>;
     getUserInfo: () => void;
 };
 
-const Header = ({ setEditor, getUserInfo }: Props) => {
+const Header = ({ getUserInfo }: Props) => {
     // theme state and theme setter function
     const { theme, setTheme } = useThemeStore();
 
     // user state and user setter function
     const { user, setUser } = useUserStore();
+
+    // editor state
+    const { setEditor } = useEditorStore();
 
     useEffect(() => {
         const pageTheme = localStorage.getItem("theme") || "light";
@@ -75,7 +78,7 @@ const Header = ({ setEditor, getUserInfo }: Props) => {
                     </Link>
                     <button
                         className="px-2 text-slate-700 hover:text-slate-950 dark:text-white dark:hover:text-slate-200"
-                        onClick={() => setEditor((state) => !state)}
+                        onClick={setEditor}
                     >
                         Post
                     </button>

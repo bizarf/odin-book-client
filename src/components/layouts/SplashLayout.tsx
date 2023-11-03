@@ -46,7 +46,7 @@ const SplashLayout = () => {
                 </div>
                 <Outlet />
             </div>
-            <Footer theme={theme} />
+            <Footer />
         </div>
     );
 };

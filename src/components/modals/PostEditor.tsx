@@ -3,25 +3,18 @@ import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorsType from "../../types/errorsType";
 import { useNavigate, useLocation } from "react-router-dom";
+import useEditorStore from "../../stores/useEditorStore";
+import useCurrentPostStore from "../../stores/useCurrentPostStore";
 
-type Props = {
-    setEditor: React.Dispatch<React.SetStateAction<boolean>>;
-    editMode: boolean;
-    setEditMode: React.Dispatch<React.SetStateAction<boolean>>;
-    postId: string | undefined;
-    currentPost: string | undefined;
-};
-
-const PostEditor = ({
-    setEditor,
-    editMode,
-    setEditMode,
-    postId,
-    currentPost,
-}: Props) => {
+const PostEditor = () => {
     const [postContent, setPostContent] = useState<string>();
     const [error, setError] = useState<[ErrorsType] | []>([]);
     const [loading, setLoading] = useState<boolean>(false);
+
+    // editor setter, editMode state, and editMode setter
+    const { setEditor, editMode, setEditMode } = useEditorStore();
+    // postId, and currentPost states
+    const { postId, currentPost } = useCurrentPostStore();
 
     const cookies = new Cookies();
     const navigate = useNavigate();
@@ -33,9 +26,9 @@ const PostEditor = ({
             | React.MouseEvent<HTMLDivElement, MouseEvent>
     ) => {
         e.preventDefault();
-        setEditor((state) => !state);
+        setEditor();
         if (editMode) {
-            setEditMode((state) => !state);
+            setEditMode();
         }
     };
 
@@ -60,7 +53,7 @@ const PostEditor = ({
 
                 // the data object has a success boolean variable. if it's true, then close the post editor and then either send the user back to the main page or refresh the page
                 if (data.success === true) {
-                    setEditor((state) => !state);
+                    setEditor();
                     if (location.pathname != "/main") {
                         navigate("/main");
                     } else {
@@ -96,7 +89,7 @@ const PostEditor = ({
 
                 // the data object has a success boolean variable. if it's true, then close the post editor and then either send the user back to the main page or refresh the page
                 if (data.success === true) {
-                    setEditor((state) => !state);
+                    setEditor();
                     if (location.pathname != "/main") {
                         navigate("/main");
                     } else {

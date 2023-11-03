@@ -1,6 +1,8 @@
 import { useState } from "react";
 import DeleteModal from "../modals/DeletePostModal";
 import PostEditor from "../modals/PostEditor";
+import useEditorStore from "../../stores/useEditorStore";
+import useCurrentPostStore from "../../stores/useCurrentPostStore";
 
 type Props = {
     postId: string;
@@ -8,8 +10,13 @@ type Props = {
 };
 
 const PostControls = ({ postId, currentPost }: Props) => {
-    const [editor, setEditor] = useState<boolean>(false);
-    const [editMode, setEditMode] = useState<boolean>(false);
+    // editor state, and editor setter
+    const { editor, setEditor } = useEditorStore();
+    // editMode setter
+    const { setEditMode } = useEditorStore();
+    // postId setter, and currentPost setter
+    const { setPostId, setCurrentPost } = useCurrentPostStore();
+
     const [deleteModal, setDeleteModal] = useState<boolean>(false);
 
     const openDeleteModal = () => {
@@ -17,8 +24,10 @@ const PostControls = ({ postId, currentPost }: Props) => {
     };
 
     const openEditPost = () => {
-        setEditMode((state) => !state);
-        setEditor((state) => !state);
+        setPostId(postId);
+        setCurrentPost(currentPost);
+        setEditMode();
+        setEditor();
     };
 
     return (
@@ -94,15 +103,7 @@ const PostControls = ({ postId, currentPost }: Props) => {
             {deleteModal && (
                 <DeleteModal setDeleteModal={setDeleteModal} postId={postId} />
             )}
-            {editor && (
-                <PostEditor
-                    postId={postId}
-                    setEditor={setEditor}
-                    editMode={editMode}
-                    currentPost={currentPost}
-                    setEditMode={setEditMode}
-                />
-            )}
+            {editor && <PostEditor />}
         </div>
     );
 };
