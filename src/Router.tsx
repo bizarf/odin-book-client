@@ -21,10 +21,12 @@ const Router = ({ getUserInfo }: Props) => {
             element: <SplashLayout />,
             children: [
                 {
+                    // login page
                     index: true,
                     element: <Login getUserInfo={getUserInfo} />,
                 },
                 {
+                    // github login callback page. element says facebook as this was originally used to handle facebook login, but it turns out this page also works for github login
                     path: "github-login",
                     element: <HandleFacebookLogin getUserInfo={getUserInfo} />,
                 },

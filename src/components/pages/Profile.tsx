@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import PostControls from "../ui/PostControls";
 import ProfileEditor from "../modals/ProfileEditor";
 import useUserStore from "../../stores/useUserStore";
+import filter from "leo-profanity";
 
 const Profile = () => {
     // user state
@@ -216,8 +217,12 @@ const Profile = () => {
                                         )}
                                         <div>
                                             <h3 className=" dark:text-white">
-                                                {post.user.firstname}{" "}
-                                                {post.user.lastname}
+                                                {filter.clean(
+                                                    post.user.firstname
+                                                )}{" "}
+                                                {filter.clean(
+                                                    post.user.lastname
+                                                )}
                                             </h3>
                                             <p className="text-xs text-gray-600 dark:text-gray-300">
                                                 Posted on:
@@ -242,8 +247,8 @@ const Profile = () => {
                                         </div>
                                     )}
                                 </div>
-                                <p className="dark:text-white px-4 py-2">
-                                    {post.postContent}
+                                <p className="dark:text-white px-4 py-2 break-all whitespace-pre-wrap">
+                                    {filter.clean(post.postContent)}
                                 </p>
 
                                 <div className="dark:text-white border-t-2 dark:border-slate-700 flex justify-center">

@@ -18,11 +18,13 @@ const Login = ({ getUserInfo }: Props) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
 
+    // universal cookie initialisation
     const cookies = new Cookies();
     const navigate = useNavigate();
 
     useEffect(() => {
         const checkCookie = async () => {
+            // set this const variable if the cookies contains a variable called jwt_auth
             const jwt = await cookies.get("jwt_auth");
             if (jwt) {
                 getUserInfo();
@@ -54,6 +56,7 @@ const Login = ({ getUserInfo }: Props) => {
                 setLoading((state) => !state);
                 // data object can either return a token or errors. if we get the token object, then we decode the token for the exp time and then create a cookie to store the jwt
                 if (data.token) {
+                    // decode the jwt
                     const decode: JwtDecodeType = jwtDecode(data.token);
                     cookies.set("jwt_auth", data.token, {
                         // multiply the expiration value from the jwt by 1000 to change the value to milliseconds so that it'll become a valid date
@@ -64,7 +67,7 @@ const Login = ({ getUserInfo }: Props) => {
                     setSuccess((state) => !state);
                     setTimeout(() => {
                         navigate("/main");
-                        // refresh. not sure why, but the app isn't re-rendering after the above navigate.
+                        // refresh. not sure why, but the app isn't re-rendering after the above navigate ever since I rewrote the router
                         navigate(0);
                     }, 500);
                 } else if (Array.isArray(data.errors)) {
@@ -95,6 +98,7 @@ const Login = ({ getUserInfo }: Props) => {
                 setLoading((state) => !state);
                 // data object can either return a token or errors. if we get the token object, then we decode the token for the exp time and then create a cookie to store the jwt
                 if (data.token) {
+                    // decode the jwt
                     const decode: JwtDecodeType = jwtDecode(data.token);
                     cookies.set("jwt_auth", data.token, {
                         // multiply the expiration value from the jwt by 1000 to change the value to milliseconds so that it'll become a valid date
@@ -132,6 +136,7 @@ const Login = ({ getUserInfo }: Props) => {
                         Welcome to Odin Book
                     </h1>
                     <form className="rounded-xl border border-slate-500 p-4 dark:bg-gray-800 bg-white">
+                        {/* username section of the form */}
                         <label
                             htmlFor="username"
                             className="block font-semibold dark:text-white text-sm"
@@ -157,6 +162,7 @@ const Login = ({ getUserInfo }: Props) => {
                                 );
                             }
                         })}
+                        {/* password section of the form */}
                         <label
                             htmlFor="password"
                             className="mt-3 block font-semibold text-sm dark:text-white"

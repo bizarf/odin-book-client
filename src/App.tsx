@@ -8,11 +8,13 @@ import Router from "./Router";
 const App = () => {
     // user setter function
     const { setUser } = useUserStore();
-
+    // initialise universal cookie
     const cookies = new Cookies();
 
     const getUserInfo = () => {
+        // set this variable to the jwt if the cookies have a variable called jwt_auth
         const jwt = cookies.get("jwt_auth");
+        // decode the jwt
         const decode: JwtDecodeType = jwtDecode(jwt);
         fetch(
             `https://odin-book-api-5r5e.onrender.com/api/profile/${decode.user}`,

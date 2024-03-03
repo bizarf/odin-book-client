@@ -11,7 +11,9 @@ const FriendsList = () => {
 
     const cookies = new Cookies();
 
+    // function to fetch the friends list from the backend
     const fetchFriendsList = () => {
+        // set the const variable to the jwt if it exists
         const jwt = cookies.get("jwt_auth");
         fetch("https://odin-book-api-5r5e.onrender.com/api/get-friends", {
             method: "get",
@@ -33,6 +35,7 @@ const FriendsList = () => {
             });
     };
 
+    // function to remove a friend from the friends list
     const removeFriend = (userId: string) => {
         const jwt = cookies.get("jwt_auth");
         fetch(

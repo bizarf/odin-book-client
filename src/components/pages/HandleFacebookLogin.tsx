@@ -10,6 +10,7 @@ type Props = {
 };
 
 const HandleFacebookLogin = ({ getUserInfo }: Props) => {
+    // universal cookie initialisation
     const cookies = new Cookies();
     const navigate = useNavigate();
     const location = useLocation();

@@ -9,6 +9,7 @@ import CommentsBtn from "../ui/CommentsBtn";
 import { Link } from "react-router-dom";
 import useUserStore from "../../stores/useUserStore";
 import useEditorStore from "../../stores/useEditorStore";
+import filter from "leo-profanity";
 
 const HomeFeed = () => {
     // user state
@@ -126,7 +127,8 @@ const HomeFeed = () => {
                 )}
                 <div className="flex flex-col items-center">
                     <h3 className="text-xl sm:text-3xl dark:text-white font-bold">
-                        {user?.firstname} {user?.lastname}
+                        {user && filter.clean(user.firstname)}{" "}
+                        {user && filter.clean(user.lastname)}
                     </h3>
                     <p className="dark:text-white">
                         Friends: {user?.friends.length}
@@ -190,8 +192,12 @@ const HomeFeed = () => {
                                             to={`/main/profile/${post.user._id}`}
                                         >
                                             <h3 className=" dark:text-white">
-                                                {post.user.firstname}{" "}
-                                                {post.user.lastname}
+                                                {filter.clean(
+                                                    post.user.firstname
+                                                )}{" "}
+                                                {filter.clean(
+                                                    post.user.lastname
+                                                )}
                                             </h3>
                                         </Link>
                                         <p className="text-xs text-gray-600 dark:text-gray-300">
@@ -217,8 +223,8 @@ const HomeFeed = () => {
                                     </div>
                                 )}
                             </div>
-                            <p className="dark:text-white px-4 py-2">
-                                {post.postContent}
+                            <p className="dark:text-white px-4 py-2 break-all whitespace-pre-wrap">
+                                {filter.clean(post.postContent)}
                             </p>
                             <div className="dark:text-white border-t-2 dark:border-slate-700 flex justify-center">
                                 <LikeBtn likes={post.likes} postId={post._id} />

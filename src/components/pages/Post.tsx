@@ -10,6 +10,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import ErrorsType from "../../types/errorsType";
 import Comments from "../ui/Comments";
 import useUserStore from "../../stores/useUserStore";
+import filter from "leo-profanity";
 
 const Post = () => {
     // user state
@@ -130,8 +131,8 @@ const Post = () => {
                                 <div>
                                     <Link to={`/main/profile/${post.user._id}`}>
                                         <h1 className=" dark:text-white">
-                                            {post.user.firstname}{" "}
-                                            {post.user.lastname}
+                                            {filter.clean(post.user.firstname)}{" "}
+                                            {filter.clean(post.user.lastname)}
                                         </h1>
                                     </Link>
                                     <p className="text-xs text-gray-600 dark:text-gray-300">
@@ -157,8 +158,8 @@ const Post = () => {
                                 </div>
                             )}
                         </div>
-                        <p className="dark:text-white px-4 py-2">
-                            {post.postContent}
+                        <p className="dark:text-white px-4 py-2 break-all whitespace-pre-wrap">
+                            {filter.clean(post.postContent)}
                         </p>
 
                         <div className="dark:text-white border-t-2 dark:border-slate-700 flex justify-center">

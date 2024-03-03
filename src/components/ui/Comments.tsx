@@ -6,6 +6,7 @@ import PostType from "../../types/postType";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
 import CommentControls from "../ui/CommentControls";
+import filter from "leo-profanity";
 
 type Props = {
     comments: CommentType[];
@@ -71,8 +72,12 @@ const Comments = ({ comments, user, post }: Props) => {
                                         to={`/main/profile/${comment.user._id}`}
                                     >
                                         <h2 className=" dark:text-white">
-                                            {comment.user.firstname}{" "}
-                                            {comment.user.lastname}
+                                            {filter.clean(
+                                                comment.user.firstname
+                                            )}{" "}
+                                            {filter.clean(
+                                                comment.user.lastname
+                                            )}
                                         </h2>
                                     </Link>
 
@@ -101,7 +106,7 @@ const Comments = ({ comments, user, post }: Props) => {
                             )}
                         </div>
                         <p className="mt-1 text-gray-800 dark:text-white break-words whitespace-pre-wrap">
-                            {comment.comment}
+                            {filter.clean(comment.comment)}
                         </p>
                         <button
                             className="w-full hover:bg-slate-200 hover:dark:bg-slate-900 dark:border-slate-700 border-2 dark:text-white border-slate-300 mt-2"
