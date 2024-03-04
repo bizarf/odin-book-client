@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Cookies from "universal-cookie";
-import jwtDecode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import ErrorsType from "../../types/errorsType";
 import JwtDecodeType from "../../types/jwtDecode";
 import LoadingSpinner from "../LoadingSpinner";

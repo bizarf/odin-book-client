@@ -214,7 +214,7 @@ const HomeFeed = () => {
                                         </p>
                                     </div>
                                 </div>
-                                {user?._id === post.user._id && (
+                                {user && user._id === post.user._id && (
                                     <div>
                                         <PostControls
                                             postId={post._id}
