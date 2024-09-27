@@ -3,9 +3,9 @@ import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
 import PostType from "../../types/postType";
 import dayjs from "dayjs";
-import PostControls from "../ui/PostControls";
-import LikeBtn from "../ui/LikeBtn";
-import CommentsBtn from "../ui/CommentsBtn";
+import PostControls from "../controls/PostControls";
+import LikeBtn from "../buttons/LikeBtn";
+import CommentsBtn from "../buttons/CommentsBtn";
 import { Link } from "react-router-dom";
 import useUserStore from "../../stores/useUserStore";
 import useEditorStore from "../../stores/useEditorStore";
@@ -26,7 +26,7 @@ const HomeFeed = () => {
 
     const getPosts = () => {
         const jwt = cookies.get("jwt_auth");
-        fetch("https://odin-book-api-5r5e.onrender.com/api/posts", {
+        fetch(`${import.meta.env.VITE_API_HOST}/api/posts`, {
             method: "get",
             headers: {
                 "Content-Type": "application/json",
@@ -68,7 +68,7 @@ const HomeFeed = () => {
 
     const getGlobalFeed = () => {
         const jwt = cookies.get("jwt_auth");
-        fetch("https://odin-book-api-5r5e.onrender.com/api/posts/global", {
+        fetch(`${import.meta.env.VITE_API_HOST}/api/posts/global`, {
             method: "get",
             headers: {
                 "Content-Type": "application/json",

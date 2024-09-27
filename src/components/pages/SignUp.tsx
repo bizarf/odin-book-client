@@ -32,7 +32,7 @@ const SignUp = () => {
             confirmPassword,
         };
 
-        fetch("https://odin-book-api-5r5e.onrender.com/api/sign-up", {
+        fetch(`${import.meta.env.VITE_API_HOST}/api/sign-up`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",

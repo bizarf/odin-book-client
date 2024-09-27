@@ -13,11 +13,13 @@ To run this project on your local server, first install the dependencies with th
 npm install
 ```
 
-Head into the @types folder in node_modules and create a file called "preline.d.ts". Inside this file add this code:
+Now create a file called ".env.development" and ".env.production" at the root of the project and inside each file add:
 
 ```
-declare module "preline";
+VITE_API_HOST="(backend_host_location)"
 ```
+
+The VITE_API_HOST variable in ".env.development" is for development purposes, while the variable in ".env.production" is used when Vite builds the site.
 
 After that is done, you can start the server with:
 
@@ -34,7 +36,6 @@ npm run dev
 -   Vite
 -   Typescript
 -   Tailwind CSS
--   Preline CSS
 -   DayJS
 -   Universal-Cookie
 -   ESLint

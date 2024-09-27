@@ -3,12 +3,12 @@ import PostType from "../../types/postType";
 import CommentType from "../../types/commentType";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
-import PostControls from "../ui/PostControls";
-import LikeBtn from "../ui/LikeBtn";
+import PostControls from "../controls/PostControls";
+import LikeBtn from "../buttons/LikeBtn";
 import dayjs from "dayjs";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import ErrorsType from "../../types/errorsType";
-import Comments from "../ui/Comments";
+import Comments from "../Comments";
 import useUserStore from "../../stores/useUserStore";
 import filter from "leo-profanity";
 
@@ -33,18 +33,15 @@ const Post = () => {
         e.preventDefault();
         setLoading(true);
 
-        fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/post/${id}/comment`,
-            {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
-                },
-                // need to stringify the username and password to be able to send them as JSON objects
-                body: JSON.stringify({ comment }),
-            }
-        )
+        fetch(`${import.meta.env.VITE_API_HOST}/api/post/${id}/comment`, {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
+            },
+            // need to stringify the username and password to be able to send them as JSON objects
+            body: JSON.stringify({ comment }),
+        })
             .then((res) => res.json())
             .then((data) => {
                 // the data object has a success boolean variable. if it's true, then close the post editor and then either send the user back to the main page or refresh the page
@@ -63,7 +60,7 @@ const Post = () => {
     useEffect(() => {
         // fetches post from database
         const getPost = () => {
-            fetch(`https://odin-book-api-5r5e.onrender.com/api/post/${id}`, {
+            fetch(`${import.meta.env.VITE_API_HOST}/api/post/${id}`, {
                 method: "get",
                 headers: {
                     "Content-Type": "application/json",
@@ -80,16 +77,13 @@ const Post = () => {
 
         // fetches comments
         const getComments = () => {
-            fetch(
-                `https://odin-book-api-5r5e.onrender.com/api/post/${id}/comments`,
-                {
-                    method: "get",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${jwt}`,
-                    },
-                }
-            )
+            fetch(`${import.meta.env.VITE_API_HOST}/api/post/${id}/comments`, {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwt}`,
+                },
+            })
                 .then((res) => res.json())
                 .then((data) => {
                     if (data) {

@@ -43,7 +43,7 @@ const Login = ({ getUserInfo }: Props) => {
         const data = { username, password };
 
         // start fetch api, with a post method and set the header content type to json
-        fetch("https://odin-book-api-5r5e.onrender.com/api/login", {
+        fetch(`${import.meta.env.VITE_API_HOST}/api/login`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -87,7 +87,7 @@ const Login = ({ getUserInfo }: Props) => {
         setLoading((state) => !state);
 
         // start fetch api, with a post method and set the header content type to json
-        fetch("https://odin-book-api-5r5e.onrender.com/api/login-demo", {
+        fetch(`${import.meta.env.VITE_API_HOST}/api/login-demo`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -213,23 +213,8 @@ const Login = ({ getUserInfo }: Props) => {
                             >
                                 Create new account
                             </Link>
-                            {/* <Link
-                                to="https://odin-book-api-5r5e.onrender.com/api/facebook-login"
-                                className="mt-3 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
-                            >
-                                <div className="flex items-center">
-                                    <img
-                                        src="./Facebook_f_logo_(2021).svg"
-                                        alt="Facebook logo"
-                                        className="w-7"
-                                    />
-                                    <span className="ml-2">
-                                        Continue with Facebook
-                                    </span>
-                                </div>
-                            </Link> */}
                             <Link
-                                to="https://odin-book-api-5r5e.onrender.com/api/github-login/"
+                                to={`${import.meta.env.VITE_API_HOST}/api/github-login/`}
                                 className="mt-3 rounded-md border border-transparent bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
                             >
                                 <div className="flex items-center">

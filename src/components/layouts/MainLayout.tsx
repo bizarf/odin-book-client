@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import Header from "../ui/Header";
+import Header from "../Header";
 import { Outlet, useNavigate } from "react-router-dom";
-import Footer from "../ui/Footer";
+import Footer from "../Footer";
 import Cookies from "universal-cookie";
 import PostEditor from "../modals/PostEditor";
 import useEditorStore from "../../stores/useEditorStore";

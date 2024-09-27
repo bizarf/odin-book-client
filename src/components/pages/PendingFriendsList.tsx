@@ -17,18 +17,15 @@ const PendingFriendsList = () => {
 
     const cookies = new Cookies();
 
-    const fetchPendingFriends = () => {
+    const loadPendingFriends = () => {
         const jwt = cookies.get("jwt_auth");
-        fetch(
-            "https://odin-book-api-5r5e.onrender.com/api/get-pending-friends",
-            {
-                method: "get",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
-                },
-            }
-        )
+        fetch(`${import.meta.env.VITE_API_HOST}/api/get-pending-friends`, {
+            method: "get",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 if (data.success === true) {
@@ -43,10 +40,10 @@ const PendingFriendsList = () => {
             });
     };
 
-    const acceptFriendRequest = (userId: string) => {
+    const handleAcceptFriendRequest = (userId: string) => {
         const jwt = cookies.get("jwt_auth");
         fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/friend-request-accept/${userId}`,
+            `${import.meta.env.VITE_API_HOST}/api/friend-request-accept/${userId}`,
             {
                 method: "put",
                 headers: {
@@ -58,15 +55,15 @@ const PendingFriendsList = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.success === true) {
-                    fetchPendingFriends();
+                    loadPendingFriends();
                 }
             });
     };
 
-    const rejectFriendRequest = (userId: string) => {
+    const handleRejectFriendRequest = (userId: string) => {
         const jwt = cookies.get("jwt_auth");
         fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/friend-request-reject/${userId}`,
+            `${import.meta.env.VITE_API_HOST}/api/friend-request-reject/${userId}`,
             {
                 method: "put",
                 headers: {
@@ -78,13 +75,13 @@ const PendingFriendsList = () => {
             .then((res) => res.json())
             .then((data) => {
                 if (data.success === true) {
-                    fetchPendingFriends();
+                    loadPendingFriends();
                 }
             });
     };
 
     useEffect(() => {
-        fetchPendingFriends();
+        loadPendingFriends();
     }, []);
 
     return (
@@ -142,7 +139,9 @@ const PendingFriendsList = () => {
                                 <button
                                     className="rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-gray-800 sm:mr-4 mb-2 sm:mb-0"
                                     onClick={() =>
-                                        acceptFriendRequest(request.sender._id)
+                                        handleAcceptFriendRequest(
+                                            request.sender._id
+                                        )
                                     }
                                 >
                                     Accept
@@ -150,7 +149,9 @@ const PendingFriendsList = () => {
                                 <button
                                     className="rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                                     onClick={() =>
-                                        rejectFriendRequest(request.sender._id)
+                                        handleRejectFriendRequest(
+                                            request.sender._id
+                                        )
                                     }
                                 >
                                     Reject

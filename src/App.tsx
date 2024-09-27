@@ -16,16 +16,13 @@ const App = () => {
         const jwt = cookies.get("jwt_auth");
         // decode the jwt
         const decode: JwtDecodeType = jwtDecode(jwt);
-        fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/profile/${decode.user}`,
-            {
-                method: "get",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
-                },
-            }
-        )
+        fetch(`${import.meta.env.VITE_API_HOST}/api/profile/${decode.user}`, {
+            method: "get",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 if (data.success === true) {

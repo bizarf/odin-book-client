@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
-import LightModeBtn from "./LightModeBtn";
-import DarkModeBtn from "./DarkModeBtn";
-import useThemeStore from "../../stores/useThemeStore";
-import useUserStore from "../../stores/useUserStore";
-import useEditorStore from "../../stores/useEditorStore";
+import LightModeBtn from "./buttons/LightModeBtn";
+import DarkModeBtn from "./buttons/DarkModeBtn";
+import useThemeStore from "../stores/useThemeStore";
+import useUserStore from "../stores/useUserStore";
+import useEditorStore from "../stores/useEditorStore";
 
 type Props = {
     getUserInfo: () => void;

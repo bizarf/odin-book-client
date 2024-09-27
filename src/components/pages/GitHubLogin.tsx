@@ -9,7 +9,7 @@ type Props = {
     getUserInfo: () => void;
 };
 
-const HandleFacebookLogin = ({ getUserInfo }: Props) => {
+const GitHubLogin = ({ getUserInfo }: Props) => {
     // universal cookie initialisation
     const cookies = new Cookies();
     const navigate = useNavigate();
@@ -37,4 +37,4 @@ const HandleFacebookLogin = ({ getUserInfo }: Props) => {
     return <LoadingSpinner />;
 };
 
-export default HandleFacebookLogin;
+export default GitHubLogin;

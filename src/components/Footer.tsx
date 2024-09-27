@@ -1,5 +1,5 @@
 // import React from "react";
-import useThemeStore from "../../stores/useThemeStore";
+import useThemeStore from "../stores/useThemeStore";
 
 const Footer = () => {
     const { theme } = useThemeStore();
