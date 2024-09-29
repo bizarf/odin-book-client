@@ -20,7 +20,7 @@ const DeletePostModal = ({ setDeleteModal, postId }: Props) => {
         // need to send the jwt as the route is protected
         const jwt = cookies.get("jwt_auth");
 
-        fetch(`https://odin-book-api-5r5e.onrender.com/api/post/${postId}`, {
+        fetch(`${import.meta.env.VITE_API_HOST}/api/post/${postId}`, {
             method: "delete",
             headers: {
                 "Content-Type": "application/json",

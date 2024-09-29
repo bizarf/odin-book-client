@@ -7,11 +7,7 @@ import useThemeStore from "../stores/useThemeStore";
 import useUserStore from "../stores/useUserStore";
 import useEditorStore from "../stores/useEditorStore";
 
-type Props = {
-    getUserInfo: () => void;
-};
-
-const Header = ({ getUserInfo }: Props) => {
+const Header = () => {
     // theme state and theme setter function
     const { theme, setTheme } = useThemeStore();
 
@@ -48,17 +44,6 @@ const Header = ({ getUserInfo }: Props) => {
         setUser(undefined);
         cookies.remove("jwt_auth");
     };
-
-    useEffect(() => {
-        const checkCookie = async () => {
-            const jwt = await cookies.get("jwt_auth");
-            if (jwt) {
-                // fetch user info from database
-                getUserInfo();
-            }
-        };
-        checkCookie();
-    }, []);
 
     return (
         <header className="sticky top-0 z-50 flex w-full border-b-[1px] dark:border-b-transparent bg-white py-2 sm:py-4 text-sm  dark:bg-gray-800">

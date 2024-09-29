@@ -38,7 +38,7 @@ const Router = ({ getUserInfo }: Props) => {
         },
         {
             path: "/main",
-            element: <MainLayout getUserInfo={getUserInfo} />,
+            element: <MainLayout />,
             children: [
                 {
                     index: true,

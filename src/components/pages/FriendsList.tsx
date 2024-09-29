@@ -4,8 +4,8 @@ import LoadingSpinner from "../LoadingSpinner";
 import FriendProfileType from "../../types/friendProfileType";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
-import { fetchFriendsList } from "@/helper/fetchFriendsList";
-import { removeFriend } from "@/helper/removeFriend";
+import fetchFriendsList from "@/helper/friends/fetchFriendsList";
+import removeFriend from "@/helper/friends/removeFriend";
 
 const FriendsList = () => {
     const [friends, setFriends] = useState<[FriendProfileType] | []>([]);

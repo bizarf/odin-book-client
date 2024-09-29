@@ -25,9 +25,9 @@ const Profile = () => {
 
     const { userId } = useParams();
     const cookies = useMemo(() => new Cookies(), []);
+    const jwt = cookies.get("jwt_auth");
 
     const sendFriendRequest = () => {
-        const jwt = cookies.get("jwt_auth");
         fetch(
             `${import.meta.env.VITE_API_HOST}/api/send-friend-request/${userId}`,
             {
@@ -61,8 +61,6 @@ const Profile = () => {
 
     useEffect(() => {
         const getUserProfile = () => {
-            const jwt = cookies.get("jwt_auth");
-
             fetch(`${import.meta.env.VITE_API_HOST}/api/profile/${userId}`, {
                 method: "get",
                 headers: {
@@ -82,7 +80,6 @@ const Profile = () => {
         };
 
         const getUserPosts = () => {
-            const jwt = cookies.get("jwt_auth");
             fetch(`${import.meta.env.VITE_API_HOST}/api/posts/${userId}`, {
                 method: "get",
                 headers: {
