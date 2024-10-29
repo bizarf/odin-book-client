@@ -17,16 +17,13 @@ const LikeBtn = ({ likes, postId }: Props) => {
         const jwt = cookies.get("jwt_auth");
         setLoading((state) => !state);
 
-        fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/post/${postId}/like`,
-            {
-                method: "put",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
-                },
-            }
-        )
+        fetch(`${import.meta.env.VITE_API_HOST}/api/post/${postId}/like`, {
+            method: "put",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${jwt}`,
+            },
+        })
             .then((res) => res.json())
             .then((data) => {
                 if (data.success === true) {

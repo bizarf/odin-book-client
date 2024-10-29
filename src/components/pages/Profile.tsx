@@ -4,10 +4,10 @@ import PostType from "../../types/postType";
 import { useParams } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
 import Cookies from "universal-cookie";
-import LikeBtn from "../ui/LikeBtn";
-import CommentsBtn from "../ui/CommentsBtn";
+import LikeBtn from "../buttons/LikeBtn";
+import CommentsBtn from "../buttons/CommentsBtn";
 import dayjs from "dayjs";
-import PostControls from "../ui/PostControls";
+import PostControls from "../controls/PostControls";
 import ProfileEditor from "../modals/ProfileEditor";
 import useUserStore from "../../stores/useUserStore";
 import filter from "leo-profanity";
@@ -25,11 +25,11 @@ const Profile = () => {
 
     const { userId } = useParams();
     const cookies = useMemo(() => new Cookies(), []);
+    const jwt = cookies.get("jwt_auth");
 
     const sendFriendRequest = () => {
-        const jwt = cookies.get("jwt_auth");
         fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/send-friend-request/${userId}`,
+            `${import.meta.env.VITE_API_HOST}/api/send-friend-request/${userId}`,
             {
                 method: "post",
                 headers: {
@@ -61,18 +61,13 @@ const Profile = () => {
 
     useEffect(() => {
         const getUserProfile = () => {
-            const jwt = cookies.get("jwt_auth");
-
-            fetch(
-                `https://odin-book-api-5r5e.onrender.com/api/profile/${userId}`,
-                {
-                    method: "get",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${jwt}`,
-                    },
-                }
-            )
+            fetch(`${import.meta.env.VITE_API_HOST}/api/profile/${userId}`, {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwt}`,
+                },
+            })
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.success === true) {
@@ -85,17 +80,13 @@ const Profile = () => {
         };
 
         const getUserPosts = () => {
-            const jwt = cookies.get("jwt_auth");
-            fetch(
-                `https://odin-book-api-5r5e.onrender.com/api/posts/${userId}`,
-                {
-                    method: "get",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${jwt}`,
-                    },
-                }
-            )
+            fetch(`${import.meta.env.VITE_API_HOST}/api/posts/${userId}`, {
+                method: "get",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${jwt}`,
+                },
+            })
                 .then((res) => res.json())
                 .then((data) => {
                     if (data.success === true) {

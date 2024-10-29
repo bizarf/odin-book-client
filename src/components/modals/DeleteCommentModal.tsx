@@ -21,7 +21,7 @@ const DeleteCommentModal = ({ setDeleteModal, postId, commentId }: Props) => {
         const jwt = cookies.get("jwt_auth");
 
         fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/post/${postId}/comments/${commentId}`,
+            `${import.meta.env.VITE_API_HOST}/api/post/${postId}/comments/${commentId}`,
             {
                 method: "delete",
                 headers: {

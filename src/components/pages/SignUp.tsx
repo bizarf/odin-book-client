@@ -3,6 +3,19 @@ import { useNavigate } from "react-router-dom";
 import ErrorsType from "../../types/errorsType";
 import LoadingSpinner from "../LoadingSpinner";
 import useUserStore from "../../stores/useUserStore";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const SignUp = () => {
     // user state
@@ -19,26 +32,72 @@ const SignUp = () => {
 
     const navigate = useNavigate();
 
-    const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const signUpFormSchema = z.object({
+        firstname: z
+            .string()
+            .min(2, {
+                message: "First name must be at least 2 characters long",
+            })
+            .regex(/^[a-zA-Z]+$/, {
+                message: "First name can only contain letters",
+            }),
+        lastname: z
+            .string()
+            .min(2, { message: "Last name must be at least 2 characters long" })
+            .regex(/^[a-zA-Z]+$/, {
+                message: "Last name can only contain letters",
+            }),
+        username: z
+            .string()
+            .email({ message: "Username must be a valid email address" }),
+        password: z
+            .string()
+            .min(8, { message: "Password must be at least 8 characters long" }),
+        confirmPassword: z
+            .string()
+            .min(8, { message: "Password must be at least 8 characters long" }),
+    });
+
+    const form = useForm<z.infer<typeof signUpFormSchema>>({
+        resolver: zodResolver(signUpFormSchema),
+        defaultValues: {
+            firstname: "",
+            lastname: "",
+            username: "",
+            password: "",
+            confirmPassword: "",
+        },
+    });
+
+    const handleSignUp = async (values: z.infer<typeof signUpFormSchema>) => {
+        setError([]);
         setLoading((state) => !state);
 
-        // turn the form field states into an object
-        const data = {
-            firstname,
-            lastname,
-            username,
-            password,
-            confirmPassword,
-        };
+        // if the password and confirm password do not match, then return an error
+        if (values.password !== values.confirmPassword) {
+            form.resetField("password");
+            form.resetField("confirmPassword");
+            setError([
+                {
+                    location: "",
+                    path: "",
+                    type: "",
+                    value: "",
+                    msg: "Passwords do not match",
+                },
+            ]);
+            return setTimeout(() => {
+                setError([]);
+            }, 5000);
+        }
 
-        fetch("https://odin-book-api-5r5e.onrender.com/api/sign-up", {
+        fetch(`${import.meta.env.VITE_API_HOST}/api/sign-up`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
             },
-            // need to stringify the username and password to be able to send them as JSON objects
-            body: JSON.stringify(data),
+            // need to stringify the values object to be able to send it as a JSON payload
+            body: JSON.stringify(values),
         })
             .then((res) => res.json())
             .then((data) => {
@@ -50,6 +109,9 @@ const SignUp = () => {
                     }, 5000);
                 } else {
                     setError(data.errors);
+                    return setTimeout(() => {
+                        setError([]);
+                    }, 5000);
                 }
             });
     };
@@ -65,136 +127,126 @@ const SignUp = () => {
             <h1 className="py-4 text-center text-2xl font-bold text-gray-800  dark:text-white">
                 Sign Up
             </h1>
-            <form
-                onSubmit={(e) => handleSignUp(e)}
-                className="mb-4 rounded-xl border border-slate-500 p-4 dark:bg-gray-800 bg-white"
-            >
-                <label
-                    htmlFor="firstname"
-                    className="mb-1 block font-semibold text-sm dark:text-white"
+            <Form {...form}>
+                <form
+                    onSubmit={form.handleSubmit(handleSignUp)}
+                    className="space-y-3 mb-4 rounded-xl border border-slate-500 p-4 dark:bg-gray-800"
                 >
-                    First Name
-                </label>
-                <input
-                    type="text"
-                    name="firstname"
-                    id="firstname"
-                    onChange={(e) => setFirstname(e.target.value)}
-                    className="block w-full rounded-md border-gray-400 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400"
-                />
-                {error.map((error, index) => {
-                    if (error.path === "firstname") {
-                        return (
-                            <div key={index} className="text-sm text-red-600">
-                                {error.msg}
-                            </div>
-                        );
-                    }
-                })}
-                <label
-                    htmlFor="lastname"
-                    className="mb-1 mt-4 block font-semibold dark:text-white text-sm"
-                >
-                    Last Name
-                </label>
-                <input
-                    type="text"
-                    name="lastname"
-                    id="lastname"
-                    onChange={(e) => setLastname(e.target.value)}
-                    className="block w-full rounded-md border-gray-400 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400"
-                />
-                {error.map((error, index) => {
-                    if (error.path === "lastname") {
-                        return (
-                            <div key={index} className="text-sm text-red-600">
-                                {error.msg}
-                            </div>
-                        );
-                    }
-                })}
-                <label
-                    htmlFor="username"
-                    className="mb-1 mt-4 block font-semibold dark:text-white text-sm"
-                >
-                    Username
-                </label>
-                <input
-                    type="email"
-                    name="username"
-                    id="username"
-                    onChange={(e) => setUsername(e.target.value)}
-                    className="block w-full rounded-md border-gray-400 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400"
-                />
-                {error.map((error, index) => {
-                    if (error.path === "username") {
-                        return (
-                            <div key={index} className="text-sm text-red-600">
-                                {error.msg}
-                            </div>
-                        );
-                    }
-                })}
-                <label
-                    htmlFor="password"
-                    className="mb-1 mt-4 block font-semibold dark:text-white text-sm"
-                >
-                    Password
-                </label>
-                <input
-                    type="password"
-                    name="password"
-                    id="password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full rounded-md border-gray-400 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400"
-                />
-                {error.map((error, index) => {
-                    if (error.path === "password") {
-                        return (
-                            <div key={index} className="text-sm text-red-600">
-                                {error.msg}
-                            </div>
-                        );
-                    }
-                })}
-                <label
-                    htmlFor="confirmPassword"
-                    className="mb-1 mt-4 block font-semibold dark:text-white text-sm"
-                >
-                    Confirm Password
-                </label>
-                <input
-                    type="password"
-                    name="confirmPassword"
-                    id="confirmPassword"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="block w-full rounded-md border-gray-400 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400"
-                />
-                {Array.isArray(error) ? (
-                    error.map((error, index) => {
-                        if (error.path === "confirmPassword") {
+                    <FormField
+                        control={form.control}
+                        name="firstname"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>First Name</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="First Name"
+                                        {...field}
+                                        className="dark:bg-slate-900"
+                                        maxLength={32}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="lastname"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Last Name</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="Last Name"
+                                        {...field}
+                                        className="dark:bg-slate-900"
+                                        maxLength={32}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="username"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Username (E-mail)</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        placeholder="Username (E-mail)"
+                                        {...field}
+                                        className="dark:bg-slate-900"
+                                        maxLength={255}
+                                        type="email"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="password"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Password</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="password"
+                                        placeholder="Password"
+                                        {...field}
+                                        className="dark:bg-slate-900"
+                                        maxLength={32}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Confirm Password</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        type="password"
+                                        placeholder="Confirm Password"
+                                        {...field}
+                                        className="dark:bg-slate-900"
+                                        maxLength={32}
+                                    />
+                                </FormControl>
+                                <FormMessage className="text-red-600" />
+                            </FormItem>
+                        )}
+                    />
+                    {Array.isArray(error) ? (
+                        error.map((error, index) => {
                             return (
-                                <div
+                                <span
                                     key={index}
                                     className="text-sm text-red-600"
                                 >
                                     {error.msg}
-                                </div>
+                                </span>
                             );
-                        }
-                    })
-                ) : (
-                    <div className="text-sm text-red-600">{error}</div>
-                )}
-                <div className="flex justify-center">
-                    <button
+                        })
+                    ) : (
+                        <div className="text-sm text-red-600">{error}</div>
+                    )}
+                    <Button
                         type="submit"
-                        className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-3 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:bg-green-700 dark:hover:bg-green-800 dark:focus:ring-offset-gray-800"
+                        className="w-full bg-blue-500 dark:text-white hover:bg-blue-600"
                     >
                         Submit
-                    </button>
-                </div>
-            </form>
+                    </Button>
+                </form>
+            </Form>
             {loading && <LoadingSpinner />}
             {success && (
                 <div className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center bg-black/[.7]">

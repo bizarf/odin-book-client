@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
-import Footer from "../ui/Footer";
-import LightModeBtn from "../ui/LightModeBtn";
-import DarkModeBtn from "../ui/DarkModeBtn";
+import Footer from "../Footer";
+import LightModeBtn from "../buttons/LightModeBtn";
+import DarkModeBtn from "../buttons/DarkModeBtn";
 import useThemeStore from "../../stores/useThemeStore";
 
 const SplashLayout = () => {

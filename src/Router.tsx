@@ -4,17 +4,13 @@ import SignUp from "./components/pages/SignUp";
 import MainLayout from "./components/layouts/MainLayout";
 import HomeFeed from "./components/pages/HomeFeed";
 import SplashLayout from "./components/layouts/SplashLayout";
-import HandleFacebookLogin from "./components/pages/HandleFacebookLogin";
+import GitHubLogin from "./components/pages/GitHubLogin";
 import FriendsList from "./components/pages/FriendsList";
 import PendingFriendsList from "./components/pages/PendingFriendsList";
 import Post from "./components/pages/Post";
 import Profile from "./components/pages/Profile";
 
-type Props = {
-    getUserInfo: () => void;
-};
-
-const Router = ({ getUserInfo }: Props) => {
+const Router = () => {
     const router = createHashRouter([
         {
             path: "/",
@@ -23,12 +19,12 @@ const Router = ({ getUserInfo }: Props) => {
                 {
                     // login page
                     index: true,
-                    element: <Login getUserInfo={getUserInfo} />,
+                    element: <Login />,
                 },
                 {
                     // github login callback page. element says facebook as this was originally used to handle facebook login, but it turns out this page also works for github login
                     path: "github-login",
-                    element: <HandleFacebookLogin getUserInfo={getUserInfo} />,
+                    element: <GitHubLogin />,
                 },
                 {
                     path: "sign-up",
@@ -38,7 +34,7 @@ const Router = ({ getUserInfo }: Props) => {
         },
         {
             path: "/main",
-            element: <MainLayout getUserInfo={getUserInfo} />,
+            element: <MainLayout />,
             children: [
                 {
                     index: true,

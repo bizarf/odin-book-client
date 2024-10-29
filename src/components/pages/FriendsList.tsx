@@ -4,60 +4,35 @@ import LoadingSpinner from "../LoadingSpinner";
 import FriendProfileType from "../../types/friendProfileType";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+import fetchFriendsList from "@/helper/friends/fetchFriendsList";
+import removeFriend from "@/helper/friends/removeFriend";
 
 const FriendsList = () => {
     const [friends, setFriends] = useState<[FriendProfileType] | []>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     const cookies = new Cookies();
+    const jwt = cookies.get("jwt_auth");
 
     // function to fetch the friends list from the backend
-    const fetchFriendsList = () => {
-        // set the const variable to the jwt if it exists
-        const jwt = cookies.get("jwt_auth");
-        fetch("https://odin-book-api-5r5e.onrender.com/api/get-friends", {
-            method: "get",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${jwt}`,
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success === true) {
-                    setFriends([...data.friendsList.friends] as [
-                        FriendProfileType,
-                    ]);
-                }
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+    const loadFriendsList = async () => {
+        const data = await fetchFriendsList(jwt);
+        if (data.success) {
+            setFriends([...data.friendsList.friends] as [FriendProfileType]);
+            setLoading(false);
+        }
     };
 
     // function to remove a friend from the friends list
-    const removeFriend = (userId: string) => {
-        const jwt = cookies.get("jwt_auth");
-        fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/unfriend/${userId}`,
-            {
-                method: "delete",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success === true) {
-                    fetchFriendsList();
-                }
-            });
+    const handleRemoveFriend = async (userId: string) => {
+        const data = await removeFriend(userId, jwt);
+        if (data.success === true) {
+            loadFriendsList();
+        }
     };
 
     useEffect(() => {
-        fetchFriendsList();
+        loadFriendsList();
     }, []);
 
     return (
@@ -109,7 +84,7 @@ const FriendsList = () => {
                         </div>
                         <button
                             className="rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 sm:mr-4"
-                            onClick={() => removeFriend(friend._id)}
+                            onClick={() => handleRemoveFriend(friend._id)}
                         >
                             Unfriend
                         </button>

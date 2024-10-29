@@ -45,7 +45,7 @@ const ProfileEditor = ({
         setLoading((prevState) => !prevState);
         const jwt = cookies.get("jwt_auth");
 
-        fetch(`https://odin-book-api-5r5e.onrender.com/api/profile/${userId}`, {
+        fetch(`${import.meta.env.VITE_API_HOST}/api/profile/${userId}`, {
             method: "put",
             headers: {
                 "Content-Type": "application/json",
@@ -68,7 +68,7 @@ const ProfileEditor = ({
             });
     };
 
-    useEffect(() => {});
+    // useEffect(() => {});
 
     return (
         <div

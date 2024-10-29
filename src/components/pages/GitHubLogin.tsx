@@ -5,11 +5,7 @@ import JwtDecodeType from "../../types/jwtDecode";
 import { useNavigate, useLocation } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner";
 
-type Props = {
-    getUserInfo: () => void;
-};
-
-const HandleFacebookLogin = ({ getUserInfo }: Props) => {
+const GitHubLogin = () => {
     // universal cookie initialisation
     const cookies = new Cookies();
     const navigate = useNavigate();
@@ -27,7 +23,6 @@ const HandleFacebookLogin = ({ getUserInfo }: Props) => {
                 // multiply the expiration value from the jwt by 1000 to change the value to milliseconds so that it'll become a valid date
                 expires: new Date(decode.exp * 1000),
             });
-            getUserInfo();
             navigate("/main");
         } else {
             navigate("/");
@@ -37,4 +32,4 @@ const HandleFacebookLogin = ({ getUserInfo }: Props) => {
     return <LoadingSpinner />;
 };
 
-export default HandleFacebookLogin;
+export default GitHubLogin;

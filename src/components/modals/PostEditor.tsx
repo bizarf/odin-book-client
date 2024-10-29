@@ -5,6 +5,8 @@ import ErrorsType from "../../types/errorsType";
 import { useNavigate, useLocation } from "react-router-dom";
 import useEditorStore from "../../stores/useEditorStore";
 import useCurrentPostStore from "../../stores/useCurrentPostStore";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 const PostEditor = () => {
     const [postContent, setPostContent] = useState<string>();
@@ -35,10 +37,11 @@ const PostEditor = () => {
     // POST create post function
     const sendPost = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault();
+
         setLoading((prevState) => !prevState);
         const jwt = cookies.get("jwt_auth");
 
-        fetch("https://odin-book-api-5r5e.onrender.com/api/create-post", {
+        fetch(`${import.meta.env.VITE_API_HOST}/api/create-post`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
@@ -152,16 +155,16 @@ const PostEditor = () => {
                         <label htmlFor="postContent" className="sr-only">
                             Post content
                         </label>
-                        <textarea
+                        <Textarea
                             name="postContent"
                             id="postContent"
-                            rows={6}
-                            maxLength={280}
-                            className="w-full rounded dark:bg-slate-900 dark:text-white"
+                            className="dark:bg-slate-900 mb-3"
                             placeholder="Share your thoughts"
                             onChange={(e) => setPostContent(e.target.value)}
                             value={postContent}
-                        ></textarea>
+                            rows={6}
+                            maxLength={280}
+                        />
                         {error.map((error, index) => {
                             if (error.path === "postContent") {
                                 return (
@@ -177,21 +180,25 @@ const PostEditor = () => {
                     </div>
                     <div>
                         {editMode ? (
-                            <button
-                                type="submit"
-                                className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
-                                onClick={(e) => sendEditPost(e)}
-                            >
+                            <Button onClick={(e) => sendEditPost(e)}>
                                 Submit
-                            </button>
+                            </Button>
                         ) : (
-                            <button
-                                type="submit"
-                                className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
-                                onClick={(e) => sendPost(e)}
-                            >
-                                Submit
-                            </button>
+                            // <button
+                            //     type="submit"
+                            //     className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                            //     onClick={(e) => sendEditPost(e)}
+                            // >
+                            //     Submit
+                            // </button>
+                            <Button onClick={(e) => sendPost(e)}>Submit</Button>
+                            // <button
+                            //     type="submit"
+                            //     className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                            //     onClick={(e) => sendPost(e)}
+                            // >
+                            //     Submit
+                            // </button>
                         )}
                     </div>
                 </form>

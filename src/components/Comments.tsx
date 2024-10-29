@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
-import CommentType from "../../types/commentType";
-import UserType from "../../types/userType";
-import PostType from "../../types/postType";
+import CommentType from "../types/commentType";
+import UserType from "../types/userType";
+import PostType from "../types/postType";
 import dayjs from "dayjs";
 import { Link } from "react-router-dom";
-import CommentControls from "../ui/CommentControls";
+import CommentControls from "./controls/CommentControls";
 import filter from "leo-profanity";
 
 type Props = {
@@ -22,7 +22,7 @@ const Comments = ({ comments, user, post }: Props) => {
         const jwt = cookies.get("jwt_auth");
 
         fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/post/${post?._id}/comments/${commentId}/like`,
+            `${import.meta.env.VITE_API_HOST}/api/post/${post?._id}/comments/${commentId}/like`,
             {
                 method: "put",
                 headers: {

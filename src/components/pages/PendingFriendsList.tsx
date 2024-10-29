@@ -5,6 +5,9 @@ import FriendRequestType from "../../types/friendRequestType";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import useUserStore from "../../stores/useUserStore";
+import fetchPendingFriends from "@/helper/friends/fetchPendingFriends";
+import sendAcceptFriendRequest from "@/helper/friends/sendAcceptFriendRequest";
+import sendRejectFriendRequest from "@/helper/friends/sendRejectFriendRequest";
 
 const PendingFriendsList = () => {
     // user state
@@ -16,75 +19,32 @@ const PendingFriendsList = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     const cookies = new Cookies();
+    const jwt = cookies.get("jwt_auth");
 
-    const fetchPendingFriends = () => {
-        const jwt = cookies.get("jwt_auth");
-        fetch(
-            "https://odin-book-api-5r5e.onrender.com/api/get-pending-friends",
-            {
-                method: "get",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success === true) {
-                    setPendingFriends([...data.existingRequest] as [
-                        FriendRequestType,
-                    ]);
-                    // console.log(pendingFriends);
-                }
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+    const loadPendingFriends = async () => {
+        const data = await fetchPendingFriends(jwt);
+        if (data.success) {
+            setPendingFriends([...data.existingRequest] as [FriendRequestType]);
+            setLoading(false);
+        }
     };
 
-    const acceptFriendRequest = (userId: string) => {
-        const jwt = cookies.get("jwt_auth");
-        fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/friend-request-accept/${userId}`,
-            {
-                method: "put",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success === true) {
-                    fetchPendingFriends();
-                }
-            });
+    const handleAcceptFriendRequest = async (userId: string) => {
+        const data = await sendAcceptFriendRequest(jwt, userId);
+        if (data.success === true) {
+            loadPendingFriends();
+        }
     };
 
-    const rejectFriendRequest = (userId: string) => {
-        const jwt = cookies.get("jwt_auth");
-        fetch(
-            `https://odin-book-api-5r5e.onrender.com/api/friend-request-reject/${userId}`,
-            {
-                method: "put",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${jwt}`,
-                },
-            }
-        )
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.success === true) {
-                    fetchPendingFriends();
-                }
-            });
+    const handleRejectFriendRequest = async (userId: string) => {
+        const data = await sendRejectFriendRequest(jwt, userId);
+        if (data.success === true) {
+            loadPendingFriends();
+        }
     };
 
     useEffect(() => {
-        fetchPendingFriends();
+        loadPendingFriends();
     }, []);
 
     return (
@@ -142,7 +102,9 @@ const PendingFriendsList = () => {
                                 <button
                                     className="rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-gray-800 sm:mr-4 mb-2 sm:mb-0"
                                     onClick={() =>
-                                        acceptFriendRequest(request.sender._id)
+                                        handleAcceptFriendRequest(
+                                            request.sender._id
+                                        )
                                     }
                                 >
                                     Accept
@@ -150,7 +112,9 @@ const PendingFriendsList = () => {
                                 <button
                                     className="rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
                                     onClick={() =>
-                                        rejectFriendRequest(request.sender._id)
+                                        handleRejectFriendRequest(
+                                            request.sender._id
+                                        )
                                     }
                                 >
                                     Reject
