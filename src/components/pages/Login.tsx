@@ -19,19 +19,21 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import fetchUserInfo from "@/helper/fetchUserInfo";
+import useUserStore from "@/stores/useUserStore";
 
-type Props = {
-    getUserInfo: () => void;
-};
-
-const Login = ({ getUserInfo }: Props) => {
+const Login = () => {
     const [error, setError] = useState<[ErrorsType] | []>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
 
     // universal cookie initialisation
     const cookies = new Cookies();
+
     const navigate = useNavigate();
+
+    // user setter function
+    const { user, setUser } = useUserStore();
 
     const loginFormSchema = z.object({
         username: z
@@ -51,20 +53,33 @@ const Login = ({ getUserInfo }: Props) => {
     });
 
     useEffect(() => {
-        const checkCookie = async () => {
-            // set this const variable if the cookies contains a variable called jwt_auth
-            const jwt = await cookies.get("jwt_auth");
-            if (jwt) {
-                getUserInfo();
+        const loggedInCheck = async () => {
+            const jwt = cookies.get("jwt_auth");
+            // if the user state exists already, then don't do fetch request
+            if (user) {
                 navigate("/main");
             }
+
+            if (jwt && !user) {
+                // if the user state is null, but a jwt exists and the user is on the login page, then run this block
+                const data = await fetchUserInfo(jwt);
+                if (data.success) {
+                    setUser(data.user);
+                    navigate("/main");
+                } else {
+                    // specifically check if the 401 unauthorised code is returned. if so, then remove the invalid jwt from the cookie and send the user back to the homepage
+                    if (data.message.status === 401) {
+                        cookies.remove("jwt_auth");
+                        navigate("/");
+                    }
+                }
+            }
         };
-        checkCookie();
+        loggedInCheck();
     }, []);
 
     const sendLogin = async (values: z.infer<typeof loginFormSchema>) => {
         setLoading((state) => !state);
-        // make an object with the username and password input states
 
         // start fetch api, with a post method and set the header content type to json
         fetch(`${import.meta.env.VITE_API_HOST}/api/login`, {
@@ -76,7 +91,7 @@ const Login = ({ getUserInfo }: Props) => {
             body: JSON.stringify(values),
         })
             .then((res) => res.json())
-            .then((data) => {
+            .then(async (data) => {
                 setLoading((state) => !state);
                 // data object can either return a token or errors. if we get the token object, then we decode the token for the exp time and then create a cookie to store the jwt
                 if (data.token) {
@@ -86,14 +101,11 @@ const Login = ({ getUserInfo }: Props) => {
                         // multiply the expiration value from the jwt by 1000 to change the value to milliseconds so that it'll become a valid date
                         expires: new Date(decode.exp * 1000),
                     });
-                    // this fetches the user's info from the database
-                    getUserInfo();
+                    // there used to be code here to fetch user info and set the user state, but it's not needed as mainLayout has a function that does the same thing on render. this simple navigate to the mainLayout is all that's needed
                     setSuccess((state) => !state);
                     setTimeout(() => {
                         navigate("/main");
-                        // refresh. not sure why, but the app isn't re-rendering after the above navigate ever since I rewrote the router
-                        navigate(0);
-                    }, 500);
+                    }, 3000);
                 } else if (Array.isArray(data.errors)) {
                     // error messages from express validator go here
                     setError(data.errors);
@@ -128,13 +140,10 @@ const Login = ({ getUserInfo }: Props) => {
                         // multiply the expiration value from the jwt by 1000 to change the value to milliseconds so that it'll become a valid date
                         expires: new Date(decode.exp * 1000),
                     });
-                    // this fetches the user's info from the database
-                    getUserInfo();
                     setSuccess((state) => !state);
                     setTimeout(() => {
                         navigate("/main");
-                        navigate(0);
-                    }, 500);
+                    }, 3000);
                 } else if (Array.isArray(data.errors)) {
                     // error messages from express validator go here
                     setError(data.errors);
@@ -255,6 +264,7 @@ const Login = ({ getUserInfo }: Props) => {
                 <LoadingSpinner />
             )}
             {success && (
+                // this is a modal
                 <div className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center bg-black/[.7]">
                     <div className="rounded-xl border border-slate-500 dark:bg-slate-800 p-4 bg-white">
                         <h2 className="text-2xl sm:text-3xl dark:text-white">
