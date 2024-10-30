@@ -34,20 +34,20 @@ const CommentControls = ({ commentId, commentContent, postId }: Props) => {
     return (
         <>
             <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger aria-label="comment dropdown menu">
                     <DotsHorizontalIcon />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuItem
                         onClick={openEditPost}
-                        aria-label="edit post"
+                        aria-label="edit comment"
                     >
                         <Pencil2Icon className="mr-2" />
                         Edit
                     </DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={openDeleteModal}
-                        aria-label="delete post"
+                        aria-label="delete comment"
                     >
                         <TrashIcon className="mr-2" />
                         Delete

@@ -44,7 +44,7 @@ const PostControls = ({ postId, currentPost }: Props) => {
     return (
         <>
             <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger aria-label="post dropdown menu">
                     <HamburgerMenuIcon />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>

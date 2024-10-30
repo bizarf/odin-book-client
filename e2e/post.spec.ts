@@ -1,19 +1,25 @@
 import { test, expect } from "@playwright/test";
 import "dotenv/config";
 
+test.beforeEach(async ({ context }) => {
+    // Create a new test user account
+    const page = await context.newPage();
+    await page.goto("http://localhost:5173/odin-book-client/#/sign-up");
+    await page.getByLabel("First Name").fill("John");
+    await page.getByLabel("Last Name").fill("Smith");
+    await page.getByLabel("Username").fill("john@smith.com");
+    await page.getByLabel("Password", { exact: true }).fill("johnsmith99");
+    await page.getByLabel("Confirm Password").fill("johnsmith99");
+    await page.getByRole("button", { name: "Submit" }).click();
+});
+
 test.describe("post tests", () => {
     test.beforeEach(async ({ page }) => {
-        test.setTimeout(50000);
         // login our test user
         await page.goto("http://localhost:5173/odin-book-client/#/");
-        await page.getByLabel("Username").click();
-        await page.getByLabel("Username").fill(process.env.TESTUSER!);
-        await page.getByLabel("Username").press("Tab");
-        await page.getByLabel("Password").fill(process.env.TESTPASSWORD!);
+        await page.getByLabel("Username").fill("john@smith.com");
+        await page.getByLabel("Password").fill("johnsmith99");
         await page.getByLabel("Password").press("Enter");
-        await expect(page).toHaveURL(
-            "http://localhost:5173/odin-book-client/#/main"
-        );
     });
 
     test("user creates a post, views the post on it's own page, edits the post, and then deletes the post", async ({
@@ -22,7 +28,6 @@ test.describe("post tests", () => {
         // make a post
         await test.step("user makes a post", async () => {
             await page.getByRole("button", { name: "Create post" }).click();
-            await page.getByPlaceholder("Share your thoughts").click();
             await page
                 .getByPlaceholder("Share your thoughts")
                 .fill("This is a test post created in Playwright.");
@@ -47,15 +52,14 @@ test.describe("post tests", () => {
 
         // edit the post
         await test.step("user edit's the post", async () => {
-            await page.locator("#hs-dropdown-custom-icon-trigger").click();
+            await page.getByLabel("post dropdown menu").click();
             await page.getByLabel("edit post").click();
-            await page.getByLabel("Post content").click();
             await page
-                .getByLabel("Post content")
+                .getByRole("textbox", { name: "Share your thoughts" })
                 .fill(
                     "This is a test post created in Playwright, but edited. "
                 );
-            await page.getByRole("button", { name: "Submit" }).click();
+            await page.getByRole("button", { name: "Submit" }).nth(1).click();
             // expect redirect to main
             await expect(page).toHaveURL(
                 "http://localhost:5173/odin-book-client/#/main"
@@ -73,7 +77,7 @@ test.describe("post tests", () => {
                 .getByRole("button", { name: "Comments: 0" })
                 .first()
                 .click();
-            await page.locator("#hs-dropdown-custom-icon-trigger").click();
+            await page.getByLabel("post dropdown menu").click();
             await page.getByLabel("delete post").click();
             await page.getByRole("button", { name: "Yes" }).click();
             await expect(
