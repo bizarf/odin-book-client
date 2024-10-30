@@ -12,7 +12,9 @@
         "preview": "vite preview",
         "deploy": "gh-pages -d dist",
         "predeploy": "npm run build",
-        "test": "vitest"
+        "test": "vitest",
+        "test:e2e": "playwright test",
+        "test:e2e-ui": "playwright test --ui"
     },
     "dependencies": {
         "@hookform/resolvers": "^3.9.0",

@@ -21,11 +21,6 @@ const SignUp = () => {
     // user state
     const { user } = useUserStore();
 
-    const [firstname, setFirstname] = useState<string>();
-    const [lastname, setLastname] = useState<string>();
-    const [username, setUsername] = useState<string>();
-    const [password, setPassword] = useState<string>();
-    const [confirmPassword, setConfirmPassword] = useState<string>();
     const [error, setError] = useState<[ErrorsType] | []>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [success, setSuccess] = useState<boolean>(false);
@@ -75,6 +70,7 @@ const SignUp = () => {
 
         // if the password and confirm password do not match, then return an error
         if (values.password !== values.confirmPassword) {
+            setLoading((state) => !state);
             form.resetField("password");
             form.resetField("confirmPassword");
             setError([
