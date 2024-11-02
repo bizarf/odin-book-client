@@ -42,6 +42,7 @@ npm run dev
 -   Prettier
 -   JWT Decode
 -   Playwright
+-   shadcn/ui
 
 <hr>
 
