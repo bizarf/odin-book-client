@@ -11,6 +11,8 @@ import ErrorsType from "../../types/errorsType";
 import Comments from "../Comments";
 import useUserStore from "../../stores/useUserStore";
 import filter from "leo-profanity";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 const Post = () => {
     // user state
@@ -172,15 +174,15 @@ const Post = () => {
                         >
                             Comment
                         </label>
-                        <textarea
+                        <Textarea
                             name="comment"
                             id="comment"
                             rows={4}
-                            className="w-full rounded dark:bg-slate-900 dark:text-white"
+                            className="dark:bg-slate-900"
                             placeholder="Share your thoughts"
                             maxLength={280}
                             onChange={(e) => setComment(e.target.value)}
-                        ></textarea>
+                        />
                         {error.map((error, index) => {
                             if (error.path === "comment") {
                                 return (
@@ -194,12 +196,12 @@ const Post = () => {
                             }
                         })}
                         <div className="flex justify-end">
-                            <button
-                                className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                            <Button
+                                className="mt-2 bg-blue-600 hover:bg-blue-700 dark:text-white px-8"
                                 onClick={(e) => postComment(e)}
                             >
                                 Reply
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 type Props = {
     setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -55,18 +56,18 @@ const DeleteCommentModal = ({ setDeleteModal, postId, commentId }: Props) => {
                     Do you want to delete this post?
                 </h2>
                 <div className="flex justify-center">
-                    <button
+                    <Button
+                        className="text-base mr-4 px-8 bg-blue-600 hover:bg-blue-700 dark:text-white "
                         onClick={deleteComment}
-                        className="rounded-md border border-transparent bg-blue-600 px-10 py-3 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:bg-green-800 dark:hover:bg-green-900 dark:focus:ring-offset-gray-800 mr-4"
                     >
                         Yes
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                        className="text-base px-8 bg-blue-600 hover:bg-blue-700 dark:text-white "
                         onClick={handleCloseModal}
-                        className="rounded-md border border-transparent bg-blue-600 px-10 py-3 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:bg-green-800 dark:hover:bg-green-900 dark:focus:ring-offset-gray-800"
                     >
                         No
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>

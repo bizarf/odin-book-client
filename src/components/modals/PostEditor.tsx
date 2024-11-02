@@ -7,6 +7,7 @@ import useEditorStore from "../../stores/useEditorStore";
 import useCurrentPostStore from "../../stores/useCurrentPostStore";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
 const PostEditor = () => {
     const [postContent, setPostContent] = useState<string>();
@@ -135,20 +136,7 @@ const PostEditor = () => {
                             onClick={(e) => handleCloseEditor(e)}
                             className="rounded-2xl hover:dark:bg-slate-700 p-1 hover:bg-slate-300"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-6 h-6 dark:text-white"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
+                            <Cross2Icon className="w-5 h-5" />
                         </button>
                     </div>
                     <div>
@@ -158,7 +146,7 @@ const PostEditor = () => {
                         <Textarea
                             name="postContent"
                             id="postContent"
-                            className="dark:bg-slate-900 mb-3"
+                            className="dark:bg-slate-900"
                             placeholder="Share your thoughts"
                             onChange={(e) => setPostContent(e.target.value)}
                             value={postContent}
@@ -180,25 +168,19 @@ const PostEditor = () => {
                     </div>
                     <div>
                         {editMode ? (
-                            <Button onClick={(e) => sendEditPost(e)}>
+                            <Button
+                                className="mt-2 bg-blue-600 hover:bg-blue-700 dark:text-white px-8"
+                                onClick={(e) => sendEditPost(e)}
+                            >
                                 Submit
                             </Button>
                         ) : (
-                            // <button
-                            //     type="submit"
-                            //     className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
-                            //     onClick={(e) => sendEditPost(e)}
-                            // >
-                            //     Submit
-                            // </button>
-                            <Button onClick={(e) => sendPost(e)}>Submit</Button>
-                            // <button
-                            //     type="submit"
-                            //     className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
-                            //     onClick={(e) => sendPost(e)}
-                            // >
-                            //     Submit
-                            // </button>
+                            <Button
+                                className="mt-2 bg-blue-600 hover:bg-blue-700 dark:text-white px-8"
+                                onClick={(e) => sendPost(e)}
+                            >
+                                Submit
+                            </Button>
                         )}
                     </div>
                 </form>
