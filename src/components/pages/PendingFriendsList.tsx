@@ -8,6 +8,7 @@ import useUserStore from "../../stores/useUserStore";
 import fetchPendingFriends from "@/helper/friends/fetchPendingFriends";
 import sendAcceptFriendRequest from "@/helper/friends/sendAcceptFriendRequest";
 import sendRejectFriendRequest from "@/helper/friends/sendRejectFriendRequest";
+import { Button } from "@/components/ui/button";
 
 const PendingFriendsList = () => {
     // user state
@@ -99,8 +100,8 @@ const PendingFriendsList = () => {
                                 </div>
                             </div>
                             <div className="flex justify-end flex-col sm:block">
-                                <button
-                                    className="rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-gray-800 sm:mr-4 mb-2 sm:mb-0"
+                                <Button
+                                    className="bg-blue-600 hover:bg-blue-700 text-white sm:mr-2 px-6 mb-2 sm:mb-0"
                                     onClick={() =>
                                         handleAcceptFriendRequest(
                                             request.sender._id
@@ -108,9 +109,9 @@ const PendingFriendsList = () => {
                                     }
                                 >
                                     Accept
-                                </button>
-                                <button
-                                    className="rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 dark:focus:ring-offset-gray-800"
+                                </Button>
+                                <Button
+                                    className="bg-blue-600 hover:bg-blue-700 text-white px-4"
                                     onClick={() =>
                                         handleRejectFriendRequest(
                                             request.sender._id
@@ -118,7 +119,7 @@ const PendingFriendsList = () => {
                                     }
                                 >
                                     Reject
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     );
@@ -165,12 +166,12 @@ const PendingFriendsList = () => {
                                 </div>
                             </div>
                             <div>
-                                <button
-                                    className="rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all  focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                                <Button
+                                    className="bg-blue-600 hover:bg-blue-700 text-white"
                                     disabled
                                 >
                                     Pending
-                                </button>
+                                </Button>
                             </div>
                         </div>
                     );

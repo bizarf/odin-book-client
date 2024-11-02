@@ -1,8 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Cookies from "universal-cookie";
 import LoadingSpinner from "../LoadingSpinner";
 import ErrorsType from "../../types/errorsType";
 import { useNavigate } from "react-router-dom";
+import { Cross2Icon } from "@radix-ui/react-icons";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 type Props = {
     setEditProfile: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +27,29 @@ type Props = {
     userId: string | undefined;
 };
 
+const formSchema = z.object({
+    firstname: z
+        .string()
+        .min(2, {
+            message: "First name must be at least 2 characters long",
+        })
+        .regex(/^[a-zA-Z'-]+$/, {
+            message:
+                "First name can only contain letters, apostrophes, and hyphens",
+        }),
+    lastname: z
+        .string()
+        .min(2, { message: "Last name must be at least 2 characters long" })
+        .regex(/^[a-zA-Z'-]+$/, {
+            message:
+                "Last name can only contain letters, apostrophes, and hyphens",
+        }),
+    username: z
+        .string()
+        .email({ message: "Username must be a valid email address" }),
+    photo: z.string(),
+});
+
 const ProfileEditor = ({
     setEditProfile,
     userFirstname,
@@ -21,17 +58,21 @@ const ProfileEditor = ({
     userPhoto,
     userId,
 }: Props) => {
-    const [firstname, setFirstname] = useState<string | undefined>(
-        userFirstname
-    );
-    const [lastname, setLastname] = useState<string | undefined>(userLastname);
-    const [username, setUsername] = useState<string | undefined>(userUsername);
-    const [photo, setPhoto] = useState<string | undefined>(userPhoto);
     const [error, setError] = useState<[ErrorsType] | []>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
     const cookies = new Cookies();
     const navigate = useNavigate();
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            firstname: userFirstname,
+            lastname: userLastname,
+            username: userUsername,
+            photo: userPhoto,
+        },
+    });
 
     const handleCloseEditor = (
         e: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -40,8 +81,7 @@ const ProfileEditor = ({
         setEditProfile((state) => !state);
     };
 
-    const updateProfile = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const updateProfile = async (values: z.infer<typeof formSchema>) => {
         setLoading((prevState) => !prevState);
         const jwt = cookies.get("jwt_auth");
 
@@ -52,7 +92,7 @@ const ProfileEditor = ({
                 Authorization: `Bearer ${jwt}`,
             },
             // need to stringify the username and password to be able to send them as JSON objects
-            body: JSON.stringify({ firstname, lastname, username, photo }),
+            body: JSON.stringify(values),
         })
             .then((res) => res.json())
             .then((data) => {
@@ -68,8 +108,6 @@ const ProfileEditor = ({
             });
     };
 
-    // useEffect(() => {});
-
     return (
         <div
             className="fixed flex top-0 left-0 right-0 bottom-0 items-center justify-center z-50 bg-black/[.7]"
@@ -79,148 +117,110 @@ const ProfileEditor = ({
                 className="rounded-xl border border-slate-500 bg-white dark:bg-slate-800 p-4 w-full max-w-md"
                 onClick={(e) => e.stopPropagation()}
             >
-                <form onSubmit={(e) => updateProfile(e)} className="">
-                    <div className="flex justify-between pb-2 items-center">
-                        <h2 className="text-xl dark:text-white">Create post</h2>
-                        <button
-                            onClick={(e) => handleCloseEditor(e)}
-                            className="rounded-2xl hover:dark:bg-slate-700 p-1 hover:bg-slate-300"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-6 h-6 dark:text-white"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
-                        </button>
-                    </div>
-                    <div>
-                        {/* first name label and input */}
-                        <label
-                            htmlFor="firstname"
-                            className="mb-1 block font-semibold text-sm dark:text-white"
-                        >
-                            First Name
-                        </label>
-                        <input
-                            type="text"
+                <div className="flex justify-between pb-2 items-center">
+                    <h2 className="text-xl dark:text-white">Edit Profile</h2>
+                    <button
+                        onClick={(e) => handleCloseEditor(e)}
+                        className="rounded-2xl hover:dark:bg-slate-700 p-1 hover:bg-slate-300"
+                    >
+                        <Cross2Icon className="w-5 h-5" />
+                    </button>
+                </div>
+                <Form {...form}>
+                    <form
+                        onSubmit={form.handleSubmit(updateProfile)}
+                        className="space-y-3"
+                    >
+                        <FormField
+                            control={form.control}
                             name="firstname"
-                            id="firstname"
-                            className="block w-full rounded-md border-gray-400 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400"
-                            onChange={(e) => setFirstname(e.target.value)}
-                            value={firstname}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>First Name</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="First Name"
+                                            {...field}
+                                            className="dark:bg-slate-900"
+                                            maxLength={32}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                        {error.map((error, index) => {
-                            if (error.path === "firstname") {
-                                return (
-                                    <div
-                                        key={index}
-                                        className="text-sm text-red-600"
-                                    >
-                                        {error.msg}
-                                    </div>
-                                );
-                            }
-                        })}
-                        {/* last name label and input */}
-                        <label
-                            htmlFor="lastname"
-                            className="mb-1 mt-4 block font-semibold dark:text-white text-sm"
-                        >
-                            Last Name
-                        </label>
-                        <input
-                            type="text"
+                        <FormField
+                            control={form.control}
                             name="lastname"
-                            id="lastname"
-                            className="block w-full rounded-md border-gray-400 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400"
-                            value={lastname}
-                            onChange={(e) => setLastname(e.target.value)}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Last Name</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Last Name"
+                                            {...field}
+                                            className="dark:bg-slate-900"
+                                            maxLength={32}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                        {error.map((error, index) => {
-                            if (error.path === "lastname") {
-                                return (
-                                    <div
-                                        key={index}
-                                        className="text-sm text-red-600"
-                                    >
-                                        {error.msg}
-                                    </div>
-                                );
-                            }
-                        })}
-                        {/* username/email label and input */}
-                        <label
-                            htmlFor="username"
-                            className="mb-1 mt-4 block font-semibold dark:text-white text-sm"
-                        >
-                            Username (e-mail)
-                        </label>
-                        <input
-                            type="email"
+                        <FormField
+                            control={form.control}
                             name="username"
-                            id="username"
-                            className="block w-full rounded-md border-gray-400 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Username (E-mail)</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Username (E-mail)"
+                                            {...field}
+                                            className="dark:bg-slate-900"
+                                            type="email"
+                                            maxLength={255}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                        {error.map((error, index) => {
-                            if (error.path === "username") {
-                                return (
-                                    <div
-                                        key={index}
-                                        className="text-sm text-red-600"
-                                    >
-                                        {error.msg}
-                                    </div>
-                                );
-                            }
-                        })}
-                        {/* photo url label and input */}
-                        <label
-                            htmlFor="photo"
-                            className="mb-1 mt-4 block font-semibold dark:text-white text-sm"
-                        >
-                            Photo URL
-                        </label>
-                        <input
-                            type="text"
+                        <FormField
+                            control={form.control}
                             name="photo"
-                            id="photo"
-                            className="block w-full rounded-md border-gray-400 px-3 py-2 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-slate-900 dark:text-gray-400"
-                            value={photo}
-                            onChange={(e) => setPhoto(e.target.value)}
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Photo URL</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Photo URL"
+                                            {...field}
+                                            className="dark:bg-slate-900"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
                         {error.map((error, index) => {
-                            if (error.path === "photo") {
-                                return (
-                                    <div
-                                        key={index}
-                                        className="text-sm text-red-600"
-                                    >
-                                        {error.msg}
-                                    </div>
-                                );
-                            }
+                            return (
+                                <span
+                                    key={index}
+                                    className="text-sm text-red-600"
+                                >
+                                    {error.msg}
+                                </span>
+                            );
                         })}
-                    </div>
-                    <div>
-                        <button
+                        <Button
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
                             type="submit"
-                            className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
                         >
                             Submit
-                        </button>
-                    </div>
-                </form>
+                        </Button>
+                    </form>
+                </Form>
                 {loading && <LoadingSpinner />}
             </div>
         </div>

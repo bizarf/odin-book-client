@@ -3,6 +3,9 @@ import LoadingSpinner from "../LoadingSpinner";
 import ErrorsType from "../../types/errorsType";
 import { useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Cross2Icon } from "@radix-ui/react-icons";
 
 type Props = {
     setEdit: React.Dispatch<React.SetStateAction<boolean>>;
@@ -61,6 +64,7 @@ const CommentEditor = ({
                 } else {
                     // error messages from express validator go here
                     setError(data.errors);
+                    setLoading((prevState) => !prevState);
                 }
             });
     };
@@ -88,36 +92,23 @@ const CommentEditor = ({
                             onClick={(e) => handleCloseEditor(e)}
                             className="rounded-2xl hover:dark:bg-slate-700 p-1 hover:bg-slate-300"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                strokeWidth={1.5}
-                                stroke="currentColor"
-                                className="w-6 h-6 dark:text-white"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    d="M6 18L18 6M6 6l12 12"
-                                />
-                            </svg>
+                            <Cross2Icon className="w-5 h-5" />
                         </button>
                     </div>
                     <div>
                         <label htmlFor="postContent" className="sr-only">
                             Comment content
                         </label>
-                        <textarea
+                        <Textarea
                             name="comment"
                             id="comment"
-                            rows={6}
-                            className="w-full rounded dark:bg-slate-900 dark:text-white"
+                            className="dark:bg-slate-900"
                             placeholder="Share your thoughts"
-                            maxLength={280}
                             onChange={(e) => setComment(e.target.value)}
                             value={comment}
-                        ></textarea>
+                            rows={6}
+                            maxLength={280}
+                        />
                         {error.map((error, index) => {
                             if (error.path === "comment") {
                                 return (
@@ -132,13 +123,12 @@ const CommentEditor = ({
                         })}
                     </div>
                     <div>
-                        <button
-                            type="submit"
-                            className="mt-3 rounded-md border border-transparent bg-blue-600 px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                        <Button
+                            className="mt-2 px-8 bg-blue-600 hover:bg-blue-700 dark:text-white"
                             onClick={(e) => sendCommentEdit(e)}
                         >
                             Submit
-                        </button>
+                        </Button>
                     </div>
                 </form>
                 {loading && <LoadingSpinner />}

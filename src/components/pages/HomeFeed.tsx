@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import useUserStore from "../../stores/useUserStore";
 import useEditorStore from "../../stores/useEditorStore";
 import filter from "leo-profanity";
+import { Button } from "@/components/ui/button";
 
 const HomeFeed = () => {
     // user state
@@ -157,12 +158,12 @@ const HomeFeed = () => {
                     </nav>
                 </div>
                 <div className="flex justify-center">
-                    <button
-                        className="mt-3 rounded-md border border-transparent bg-blue-600 px-14 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800"
+                    <Button
+                        className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-8"
                         onClick={setEditor}
                     >
                         Create post
-                    </button>
+                    </Button>
                 </div>
                 {posts.map((post) => {
                     return (

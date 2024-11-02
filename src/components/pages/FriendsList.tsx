@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import dayjs from "dayjs";
 import fetchFriendsList from "@/helper/friends/fetchFriendsList";
 import removeFriend from "@/helper/friends/removeFriend";
+import { Button } from "@/components/ui/button";
 
 const FriendsList = () => {
     const [friends, setFriends] = useState<[FriendProfileType] | []>([]);
@@ -82,12 +83,12 @@ const FriendsList = () => {
                                 </p>
                             </div>
                         </div>
-                        <button
-                            className="rounded-md border border-transparent bg-blue-600 px-4 sm:px-10 py-2 text-sm font-semibold text-white transition-all hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2  dark:focus:ring-offset-gray-800 sm:mr-4"
+                        <Button
+                            className="bg-blue-600 hover:bg-blue-700 text-white"
                             onClick={() => handleRemoveFriend(friend._id)}
                         >
                             Unfriend
-                        </button>
+                        </Button>
                     </div>
                 );
             })}

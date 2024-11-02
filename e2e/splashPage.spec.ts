@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import "dotenv/config";
 
 test.describe("splash page tests", () => {
     test.beforeEach(async ({ page }, testInfo) => {

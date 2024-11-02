@@ -222,7 +222,7 @@ const Login = () => {
                             })}
                             <Button
                                 type="submit"
-                                className="w-full bg-blue-500 dark:text-white hover:bg-blue-600"
+                                className="w-full bg-blue-600 dark:text-white hover:bg-blue-700"
                             >
                                 Submit
                             </Button>
@@ -230,11 +230,11 @@ const Login = () => {
                     </Form>
                     <div className="mt-2 space-y-3 rounded-xl border border-slate-500 p-4 dark:bg-gray-800 flex flex-col">
                         <Link to="sign-up">
-                            <Button className="w-full bg-blue-500 dark:text-white hover:bg-blue-600">
+                            <Button className="w-full bg-blue-600 dark:text-white hover:bg-blue-700">
                                 Create new account
                             </Button>
                         </Link>
-                        <Button className="w-full bg-blue-500 dark:text-white hover:bg-blue-600">
+                        <Button className="w-full bg-blue-600 dark:text-white hover:bg-blue-700">
                             <Link
                                 to={`${import.meta.env.VITE_API_HOST}/api/github-login/`}
                             >
@@ -251,7 +251,7 @@ const Login = () => {
                             </Link>
                         </Button>
                         <Button
-                            className="w-full bg-blue-500 dark:text-white hover:bg-blue-600"
+                            className="w-full bg-blue-600 dark:text-white hover:bg-blue-700"
                             onClick={(e) => handleDemoLogin(e)}
                         >
                             Try the demo account

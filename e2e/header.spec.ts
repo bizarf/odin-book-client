@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import "dotenv/config";
 
 test.beforeEach(async ({ context }) => {
     // Create a new test user account
